@@ -1,5 +1,4 @@
-using System.Threading;
-using System.Threading.Tasks;
+
 using Godot;
 [Tool]
 public partial class TerrainGeneration : Node3D
@@ -10,6 +9,10 @@ public partial class TerrainGeneration : Node3D
     [Export] int resolution = 2;
     public int seed = 0;
     public float heightModifier = 0;
+
+
+    public float waterLevelHeight;
+    [Export] public MeshInstance3D water;
 
 
 
@@ -49,6 +52,17 @@ public partial class TerrainGeneration : Node3D
             SubdivideWidth = resolution,
             Size = Vector2.One * size
         };
+
+        var waterMesh = new PlaneMesh
+        {
+            SubdivideDepth = resolution / 2,
+            SubdivideWidth = resolution / 2,
+            Size = Vector2.One * size
+        };
+        water.Mesh = waterMesh;
+        water.Position += Vector3.Up * waterLevelHeight;
+
+
         Godot.Collections.Array planeArrays = plane.GetMeshArrays();
         var vertexArray = planeArrays[(int)Mesh.ArrayType.Vertex].As<Vector3[]>();
         var normalArray = planeArrays[(int)Mesh.ArrayType.Normal].As<Vector3[]>();

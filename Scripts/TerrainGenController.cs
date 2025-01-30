@@ -16,6 +16,7 @@ public partial class TerrainGenController : Node3D
     [Export] int seed;
     [Export] float heightModifier;
     [Export] int framesPerUpdate = 100;
+    [Export] float waterLevelHeight;
     int frameIndex = 0;
 
 
@@ -119,7 +120,7 @@ public partial class TerrainGenController : Node3D
 
         terrain.size = terrainSize;
         terrain.seed = seed;
-
+        terrain.waterLevelHeight = waterLevelHeight;
 
         terrain.heightModifier = heightModifier;
 
