@@ -1,3 +1,5 @@
+using System.Threading;
+using System.Threading.Tasks;
 using Godot;
 [Tool]
 public partial class TerrainGeneration : Node3D
@@ -34,19 +36,28 @@ public partial class TerrainGeneration : Node3D
     }
     public void UpdateMesh()
     {
-        material.SetShaderParameter("height", heightModifier * 2.4);
-        // 
-        GD.Print("UpdateMesh");
-        var plane = new PlaneMesh();
-        plane.SubdivideDepth = resolution;
-        plane.SubdivideWidth = resolution;
-        plane.Size = Vector2.One * size;
-        Godot.Collections.Array planeArrays = plane.GetMeshArrays();
+        var all = System.Diagnostics.Stopwatch.StartNew();
+
+
         var arrayMesh = new ArrayMesh();
+
+
+
+        var plane = new PlaneMesh
+        {
+            SubdivideDepth = resolution,
+            SubdivideWidth = resolution,
+            Size = Vector2.One * size
+        };
+        Godot.Collections.Array planeArrays = plane.GetMeshArrays();
         var vertexArray = planeArrays[(int)Mesh.ArrayType.Vertex].As<Vector3[]>();
         var normalArray = planeArrays[(int)Mesh.ArrayType.Normal].As<Vector3[]>();
         var tangentArray = planeArrays[(int)Mesh.ArrayType.Tangent].As<float[]>();
-        GD.Print($"UpdateMesh 2 {vertexArray.Length}");
+
+
+
+        var noise = System.Diagnostics.Stopwatch.StartNew();
+
         for (int i = 0; i < vertexArray.Length; i++)
         {
             var vertex = vertexArray[i];
@@ -63,16 +74,24 @@ public partial class TerrainGeneration : Node3D
             tangentArray[4 * i + 2] = tangent.Z;
 
         }
+
+        GD.Print($"Time- noise: {noise.Elapsed}");
+
+        noise.Stop();
         planeArrays[(int)Mesh.ArrayType.Vertex] = vertexArray;
         planeArrays[(int)Mesh.ArrayType.Normal] = normalArray;
         planeArrays[(int)Mesh.ArrayType.Tangent] = tangentArray;
 
-        GD.Print($"UpdateMesh 3 {vertexArray.Length}");
+
+
+
 
         arrayMesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, planeArrays);
         mesh.Mesh = arrayMesh;
         mesh.SetSurfaceOverrideMaterial(0, material);
-    }
+        GD.Print($"Time- all: {all.Elapsed}");
 
+        all.Stop();
+    }
 
 }

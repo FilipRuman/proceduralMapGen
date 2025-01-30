@@ -22,6 +22,8 @@ public partial class TerrainGenController : Node3D
 
     int lastMaxX, lastMinX, lastMaxY, lastMinY;
 
+
+
     bool LoadNewTerrain(int maxX, int minX, int maxY, int minY)
     {
         var returnValue = !(lastMaxX == maxX && lastMinX == minX && lastMinY == minY && lastMaxY == maxY);
@@ -38,12 +40,10 @@ public partial class TerrainGenController : Node3D
     {
         frameIndex++;
         if (frameIndex < framesPerUpdate) return;
-        GD.Print("Update terrain gen 1");
         frameIndex = 0;
         if (terrainLayout == null) return;
         noise.Seed = seed;
         noise2.Seed = seed;
-
         WhatTerrainDoYouNeedToLoad(out int maxX, out int minX, out int maxY, out int minY);
 
         if (!LoadNewTerrain(maxX, minX, maxY, minY) && !forceRegenerate) return;
@@ -53,7 +53,6 @@ public partial class TerrainGenController : Node3D
         forceRegenerate = false;
 
         RemoveNotNeededTerrain(maxX, minX, maxY, minY);
-
         for (int x = minX; x < maxX; x++)
         {
             for (int y = minY; y < maxY; y++)
@@ -129,7 +128,12 @@ public partial class TerrainGenController : Node3D
 
         terrain.noise = noise;
         terrain.noise2 = noise2;
+        var updMesh = System.Diagnostics.Stopwatch.StartNew();
+
         terrain.UpdateMesh();
+        GD.Print($"Time- updMesh: {updMesh.Elapsed}");
+        updMesh.Stop();
+
     }
 
 

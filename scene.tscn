@@ -33,13 +33,13 @@ terrainLayout = NodePath("../Layout")
 Player = NodePath("../Player")
 noise = ExtResource("4_y2354")
 noise2 = ExtResource("5_ni31j")
-ViewDistance = 656.79
-terrainSize = 100.0
+ViewDistance = 1334.68
+terrainSize = 300.0
 seed = 1115
-heightModifier = 286.925
+heightModifier = 338.99
 
 [node name="Player" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6516.32, 0, -7617.92)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1604.22, 0, -2499.02)
 
 [node name="Layout" type="Node3D" parent="."]
 

@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=4 uid="uid://c44h3h2eg2lix"]
+[gd_scene load_steps=4 format=4 uid="uid://c44h3h2eg2lix"]
 
 [ext_resource type="Script" uid="uid://d28f3afuaxlgt" path="res://Scripts/TerrainGeneration.cs" id="1_gb8d6"]
 [ext_resource type="Material" uid="uid://c4wn0ciea6d2g" path="res://TerrainMat.tres" id="2_2khun"]
-[ext_resource type="FastNoiseLite" uid="uid://by72c12n557yf" path="res://TerrainNoise.tres" id="3_6sotq"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_k5xim"]
 _surfaces = [{
@@ -21,8 +20,7 @@ _surfaces = [{
 script = ExtResource("1_gb8d6")
 material = ExtResource("2_2khun")
 mesh = NodePath("Mesh")
-resolution = 64
-noise = ExtResource("3_6sotq")
+resolution = 5
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
 mesh = SubResource("ArrayMesh_k5xim")
