@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=4 uid="uid://c44h3h2eg2lix"]
 
-[ext_resource type="Script" uid="uid://d28f3afuaxlgt" path="res://Scripts/TerrainGeneration.cs" id="1_gb8d6"]
-[ext_resource type="Material" uid="uid://c4wn0ciea6d2g" path="res://TerrainMat.tres" id="2_2khun"]
-[ext_resource type="Material" uid="uid://c3n5s605sn0ya" path="res://waterMaterial.tres" id="3_k5xim"]
+[ext_resource type="Script" uid="uid://d28f3afuaxlgt" path="res://TerrainGeneration/TerrainGeneration.cs" id="1_offtf"]
+[ext_resource type="Material" uid="uid://c4wn0ciea6d2g" path="res://materials/TerrainMat.tres" id="2_l1xvx"]
+[ext_resource type="Material" uid="uid://c3n5s605sn0ya" path="res://materials/waterMaterial.tres" id="3_toxm5"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_k5xim"]
 _surfaces = [{
@@ -20,8 +20,8 @@ _surfaces = [{
 [sub_resource type="PlaneMesh" id="PlaneMesh_dsyoj"]
 
 [node name="TerrainGeneration" type="Node3D" node_paths=PackedStringArray("mesh", "water")]
-script = ExtResource("1_gb8d6")
-material = ExtResource("2_2khun")
+script = ExtResource("1_offtf")
+material = ExtResource("2_l1xvx")
 mesh = NodePath("terrain")
 resolution = 5
 water = NodePath("Water")
@@ -29,9 +29,9 @@ water = NodePath("Water")
 [node name="terrain" type="MeshInstance3D" parent="."]
 mesh = SubResource("ArrayMesh_k5xim")
 skeleton = NodePath("../..")
-surface_material_override/0 = ExtResource("2_2khun")
+surface_material_override/0 = ExtResource("2_l1xvx")
 
 [node name="Water" type="MeshInstance3D" parent="."]
 cast_shadow = 0
 mesh = SubResource("PlaneMesh_dsyoj")
-surface_material_override/0 = ExtResource("3_k5xim")
+surface_material_override/0 = ExtResource("3_toxm5")

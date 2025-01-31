@@ -17,10 +17,3 @@ config/features=PackedStringArray("4.4", "C#", "Forward Plus")
 [dotnet]
 
 project/assembly_name="proceduralMapGen"
-
-[file_customization]
-
-folder_colors={
-"res://Scripts/": "yellow",
-"res://prefabs/": "red"
-}

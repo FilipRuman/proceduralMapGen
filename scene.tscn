@@ -1,10 +1,10 @@
 [gd_scene load_steps=10 format=3 uid="uid://cdy6pk1gvk4w5"]
 
-[ext_resource type="PackedScene" uid="uid://c44h3h2eg2lix" path="res://prefabs/terrain_generation.tscn" id="1_3253y"]
-[ext_resource type="Script" uid="uid://bv8fxqvemqtej" path="res://Scripts/TerrainGenController.cs" id="3_u3cyc"]
+[ext_resource type="PackedScene" uid="uid://c44h3h2eg2lix" path="res://TerrainGeneration/terrain_generation.tscn" id="1_3253y"]
+[ext_resource type="Script" uid="uid://bv8fxqvemqtej" path="res://TerrainGeneration/TerrainGenController.cs" id="3_u3cyc"]
 [ext_resource type="Texture2D" uid="uid://bkaqlxab1w1ta" path="res://DayInTheClouds4k.hdr" id="4_m7jmp"]
-[ext_resource type="FastNoiseLite" uid="uid://by72c12n557yf" path="res://TerrainNoise.tres" id="4_y2354"]
-[ext_resource type="FastNoiseLite" uid="uid://b2w8lwf55x5hs" path="res://TerrainNoise2.tres" id="5_ni31j"]
+[ext_resource type="FastNoiseLite" uid="uid://by72c12n557yf" path="res://materials/TerrainNoise.tres" id="4_y2354"]
+[ext_resource type="FastNoiseLite" uid="uid://b2w8lwf55x5hs" path="res://materials/TerrainNoise2.tres" id="5_ni31j"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_ni31j"]
 panorama = ExtResource("4_m7jmp")

@@ -1,7 +1,7 @@
 [gd_resource type="ShaderMaterial" load_steps=8 format=3 uid="uid://c4wn0ciea6d2g"]
 
-[ext_resource type="Shader" uid="uid://b5siuxrm1es3d" path="res://terrain.gdshader" id="1_dxhe3"]
-[ext_resource type="FastNoiseLite" uid="uid://by72c12n557yf" path="res://TerrainNoise.tres" id="2_p54fb"]
+[ext_resource type="Shader" uid="uid://b5siuxrm1es3d" path="res://materials/terrain.gdshader" id="1_dxhe3"]
+[ext_resource type="FastNoiseLite" uid="uid://by72c12n557yf" path="res://materials/TerrainNoise.tres" id="2_p54fb"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_p54fb"]
 frequency = 0.0004
