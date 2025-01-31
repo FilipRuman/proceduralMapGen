@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cdy6pk1gvk4w5"]
+[gd_scene load_steps=10 format=3 uid="uid://cdy6pk1gvk4w5"]
 
 [ext_resource type="PackedScene" uid="uid://c44h3h2eg2lix" path="res://prefabs/terrain_generation.tscn" id="1_3253y"]
 [ext_resource type="Script" uid="uid://bv8fxqvemqtej" path="res://Scripts/TerrainGenController.cs" id="3_u3cyc"]
@@ -20,6 +20,8 @@ ambient_light_color = Color(1, 1, 1, 0.14902)
 ambient_light_energy = 0.49
 reflected_light_source = 2
 
+[sub_resource type="BoxMesh" id="BoxMesh_m7jmp"]
+
 [node name="Scene" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -37,9 +39,10 @@ ViewDistance = 1334.68
 terrainSize = 300.0
 seed = 1115
 heightModifier = 338.99
+waterLevelHeight = -236.375
 
 [node name="Player" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1604.22, 0, -2499.02)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 388.034)
 
 [node name="Layout" type="Node3D" parent="."]
 
@@ -55,3 +58,7 @@ directional_shadow_split_3 = 0.422
 directional_shadow_fade_start = 0.133
 directional_shadow_max_distance = 451.6
 directional_shadow_pancake_size = 0.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(5.79855, 0, 0, 0, 4.35028, 0, 0, 0, 4.00002, 0, -253.024, 785.285)
+mesh = SubResource("BoxMesh_m7jmp")

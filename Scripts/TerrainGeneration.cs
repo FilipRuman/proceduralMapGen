@@ -52,7 +52,6 @@ public partial class TerrainGeneration : Node3D
             SubdivideWidth = resolution,
             Size = Vector2.One * size
         };
-
         var waterMesh = new PlaneMesh
         {
             SubdivideDepth = resolution / 2,

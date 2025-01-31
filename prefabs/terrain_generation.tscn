@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://d28f3afuaxlgt" path="res://Scripts/TerrainGeneration.cs" id="1_gb8d6"]
 [ext_resource type="Material" uid="uid://c4wn0ciea6d2g" path="res://TerrainMat.tres" id="2_2khun"]
+[ext_resource type="Material" uid="uid://c3n5s605sn0ya" path="res://waterMaterial.tres" id="3_k5xim"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_k5xim"]
 _surfaces = [{
@@ -18,10 +19,6 @@ _surfaces = [{
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_dsyoj"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dsyoj"]
-transparency = 4
-albedo_color = Color(0.243318, 4.79382e-05, 0.903235, 1)
-
 [node name="TerrainGeneration" type="Node3D" node_paths=PackedStringArray("mesh", "water")]
 script = ExtResource("1_gb8d6")
 material = ExtResource("2_2khun")
@@ -35,5 +32,6 @@ skeleton = NodePath("../..")
 surface_material_override/0 = ExtResource("2_2khun")
 
 [node name="Water" type="MeshInstance3D" parent="."]
+cast_shadow = 0
 mesh = SubResource("PlaneMesh_dsyoj")
-surface_material_override/0 = SubResource("StandardMaterial3D_dsyoj")
+surface_material_override/0 = ExtResource("3_k5xim")
