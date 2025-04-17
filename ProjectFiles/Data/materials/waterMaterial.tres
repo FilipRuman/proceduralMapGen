@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=8 format=3 uid="uid://c3n5s605sn0ya"]
 
-[ext_resource type="Shader" uid="uid://jh6q3uaq6ilq" path="res://materials/water.gdshader" id="1_c6u7i"]
+[ext_resource type="Shader" uid="uid://jh6q3uaq6ilq" path="res://Data/materials/water.gdshader" id="1_c6u7i"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_km0uu"]
 fractal_type = 2

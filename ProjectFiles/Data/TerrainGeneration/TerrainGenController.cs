@@ -1,35 +1,36 @@
 using Godot;
-using System;
 using System.Collections.Generic;
 [Tool]
-public partial class TerrainGenController : Node3D
-{
+public partial class TerrainGenController : Node {
+
     [Export] bool forceRegenerate = new();
     [Export] PackedScene TerrainGenerationPrefab;
     [Export] Node3D terrainLayout;
-    [Export] Node3D Player;
-    [Export] FastNoiseLite noise;
-    [Export] FastNoiseLite noise2;
+    [Export] public Node3D Player;
+
     [Export] float ViewDistance;
     [Export] float terrainSize;
+
     Dictionary<Vector2I, TerrainGeneration> terrainDisplays = new();
-    [Export] int seed;
-    [Export] float heightModifier;
+
+    [Export] public float terrainScale;
     [Export] int framesPerUpdate = 100;
+
     [Export] float waterLevelHeight;
+    [Export] float terrainBaseHeight = 2000;
+
+    [Export] NoiseController noiseController;
     int frameIndex = 0;
 
 
 
     int lastMaxX, lastMinX, lastMaxY, lastMinY;
 
+    bool spawningInProgress = false;
 
-
-    bool LoadNewTerrain(int maxX, int minX, int maxY, int minY)
-    {
+    bool LoadNewTerrain(int maxX, int minX, int maxY, int minY) {
         var returnValue = !(lastMaxX == maxX && lastMinX == minX && lastMinY == minY && lastMaxY == maxY);
-        if (returnValue)
-        {
+        if (returnValue) {
             lastMaxX = maxX;
             lastMinX = minX;
             lastMinY = minY;
@@ -37,15 +38,16 @@ public partial class TerrainGenController : Node3D
         }
         return returnValue;
     }
-    public override void _Process(double delta)
-    {
+    public override void _Process(double delta) {
+        if (spawningInProgress)
+            SpreadSpawningTerrain(terrainDisplays.Count == 0);
         frameIndex++;
         if (frameIndex < framesPerUpdate) return;
         frameIndex = 0;
         if (terrainLayout == null) return;
-        noise.Seed = seed;
-        noise2.Seed = seed;
-        WhatTerrainDoYouNeedToLoad(out int maxX, out int minX, out int maxY, out int minY);
+        if (Player == null) return;
+
+        WhatTerrainDoYouNeedToLoad(out maxX, out minX, out maxY, out minY);
 
         if (!LoadNewTerrain(maxX, minX, maxY, minY) && !forceRegenerate) return;
         if (forceRegenerate)
@@ -54,64 +56,70 @@ public partial class TerrainGenController : Node3D
         forceRegenerate = false;
 
         RemoveNotNeededTerrain(maxX, minX, maxY, minY);
-        for (int x = minX; x < maxX; x++)
-        {
-            for (int y = minY; y < maxY; y++)
-            {
-                Vector2I key = new(x, y);
-                if (terrainDisplays.ContainsKey(key))
-                    continue;
-                SpawnTerrain(key);
-            }
-        }
 
 
+        spawningInProgress = true;
         base._Process(delta);
     }
 
-    private void Regenerate()
-    {
-        foreach (var item in terrainLayout.GetChildren())
-        {
+    private void Regenerate() {
+        foreach (var item in terrainLayout.GetChildren()) {
             item.QueueFree();
         }
         terrainDisplays.Clear();
     }
+    int minX;
+    int maxX;
+    int minY;
+    int maxY;
+    [Export] int terrainsPerFrame = 2;
+    void SpreadSpawningTerrain(bool spawnAll) {
+        int spawnedTerrains = 0;
+        for (int x = minX; x < maxX; x++) {
+            for (int y = minY; y < maxY; y++) {
+                Vector2I key = new(x, y);
+                if (terrainDisplays.ContainsKey(key))
+                    continue;
 
+                SpawnTerrain(key);
+                spawnedTerrains++;
 
-    void RemoveNotNeededTerrain(int maxX, int minX, int maxY, int minY)
-    {
+                if (terrainsPerFrame == spawnedTerrains && !spawnAll)
+                    return;
+            }
+        }
+        spawningInProgress = false;
+    }
+
+    void RemoveNotNeededTerrain(int maxX, int minX, int maxY, int minY) {
         List<Vector2I> toRemove = new();
-        foreach (var terrainValePair in terrainDisplays)
-        {
+        foreach (var terrainValePair in terrainDisplays) {
             if (terrainValePair.Key.X < minX || terrainValePair.Key.X > maxX ||
-                terrainValePair.Key.Y < minY || terrainValePair.Key.Y > maxY)
-            {
+                terrainValePair.Key.Y < minY || terrainValePair.Key.Y > maxY) {
                 terrainValePair.Value.QueueFree();
                 toRemove.Add(terrainValePair.Key);
             }
 
         }
 
-        foreach (var item in toRemove)
-        {
+        foreach (var item in toRemove) {
             terrainDisplays.Remove(item);
         }
     }
 
-    void WhatTerrainDoYouNeedToLoad(out int maxX, out int minX, out int maxY, out int minY)
-    {
+    void WhatTerrainDoYouNeedToLoad(out int maxX, out int minX, out int maxY, out int minY) {
+
         var playerPos = Player.GlobalPosition;
 
-        maxX = Mathf.CeilToInt((playerPos.X + ViewDistance) / terrainSize);
-        minX = Mathf.CeilToInt((playerPos.X - ViewDistance) / terrainSize);
+        maxX = Mathf.CeilToInt((playerPos.X + ViewDistance) / RealTerrainSize);
+        minX = Mathf.CeilToInt((playerPos.X - ViewDistance) / RealTerrainSize);
 
-        maxY = Mathf.CeilToInt((playerPos.Z + ViewDistance) / terrainSize);
-        minY = Mathf.CeilToInt((playerPos.Z - ViewDistance) / terrainSize);
+        maxY = Mathf.CeilToInt((playerPos.Z + ViewDistance) / RealTerrainSize);
+        minY = Mathf.CeilToInt((playerPos.Z - ViewDistance) / RealTerrainSize);
     }
 
-    void SpawnTerrain(Vector2I positionOnAGrid)
-    {
+    float RealTerrainSize => terrainSize * terrainScale;
+    void SpawnTerrain(Vector2I positionOnAGrid) {
         var node = TerrainGenerationPrefab.Instantiate(PackedScene.GenEditState.Main);
         terrainLayout.AddChild(node);
         var terrain = (TerrainGeneration)node;
@@ -119,22 +127,15 @@ public partial class TerrainGenController : Node3D
         terrainDisplays.Add(positionOnAGrid, terrain);
 
         terrain.size = terrainSize;
-        terrain.seed = seed;
+        terrain.noiseController = noiseController;
         terrain.waterLevelHeight = waterLevelHeight;
 
-        terrain.heightModifier = heightModifier;
 
-        Vector3 position = new(positionOnAGrid.X * terrainSize, 0, positionOnAGrid.Y * terrainSize);
+        terrain.Scale = new Vector3(terrainScale, terrainScale, terrainScale);
+        Vector3 position = new(positionOnAGrid.X * RealTerrainSize, terrainBaseHeight, positionOnAGrid.Y * RealTerrainSize);
         terrain.Position = position;
 
-        terrain.noise = noise;
-        terrain.noise2 = noise2;
-        var updMesh = System.Diagnostics.Stopwatch.StartNew();
-
         terrain.UpdateMesh();
-        GD.Print($"Time- updMesh: {updMesh.Elapsed}");
-        updMesh.Stop();
-
     }
 
 

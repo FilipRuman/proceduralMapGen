@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bkaqlxab1w1ta"
-path.bptc="res://.godot/imported/DayInTheClouds4k.hdr-4c2040ce15437fb15cc54327066f5658.bptc.ctex"
+path.bptc="res://.godot/imported/DayInTheClouds4k.hdr-73e1d409d4abee44d1e7ddc4a2da8ab6.bptc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://DayInTheClouds4k.hdr"
-dest_files=["res://.godot/imported/DayInTheClouds4k.hdr-4c2040ce15437fb15cc54327066f5658.bptc.ctex"]
+source_file="res://Data/DayInTheClouds4k.hdr"
+dest_files=["res://.godot/imported/DayInTheClouds4k.hdr-73e1d409d4abee44d1e7ddc4a2da8ab6.bptc.ctex"]
 
 [params]
 
