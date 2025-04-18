@@ -1,11 +1,16 @@
-[gd_scene load_steps=19 format=3 uid="uid://cdy6pk1gvk4w5"]
+[gd_scene load_steps=28 format=3 uid="uid://cdy6pk1gvk4w5"]
 
 [ext_resource type="Texture2D" uid="uid://bkaqlxab1w1ta" path="res://Data/DayInTheClouds4k.hdr" id="1_228xt"]
 [ext_resource type="Script" uid="uid://bv8fxqvemqtej" path="res://Data/TerrainGeneration/TerrainGenController.cs" id="2_4sc0t"]
 [ext_resource type="PackedScene" uid="uid://c44h3h2eg2lix" path="res://Data/TerrainGeneration/terrain_generation.tscn" id="3_s3sds"]
 [ext_resource type="Script" uid="uid://ierrqo2ukh5f" path="res://Data/TerrainGeneration/NoiseComponent.cs" id="5_ej8ax"]
 [ext_resource type="Script" uid="uid://dav4rnnxeno8o" path="res://Data/TerrainGeneration/NoiseController.cs" id="5_s3sds"]
-[ext_resource type="PackedScene" uid="uid://byr5ui4jwbkxu" path="res://Data/objects spawning/Assets/Low poly trees - free nature pack/Meshes/Trees/Ash/Ash.fbx" id="6_ej8ax"]
+[ext_resource type="PackedScene" uid="uid://bp4nkn64a0fgy" path="res://Data/objects spawning/Assets/Low poly trees - free nature pack/Meshes/Trees/Birch/Birch.fbx" id="5_wtp0o"]
+[ext_resource type="PackedScene" uid="uid://dkbq814oscelf" path="res://Data/objects spawning/Assets/Low poly trees - free nature pack/Meshes/Trees/Oak/Oak.fbx" id="6_dvhxg"]
+[ext_resource type="Script" uid="uid://d2arlmtd5o7pq" path="res://Data/objects spawning/ObjectsSpawningController.cs" id="6_ej8ax"]
+[ext_resource type="PackedScene" uid="uid://860bo1v5ajhi" path="res://Data/objects spawning/Assets/Low poly trees - free nature pack/Meshes/Rocks/Rock.fbx" id="7_7qvum"]
+[ext_resource type="PackedScene" uid="uid://ixfnad24m0q4" path="res://Data/objects spawning/Assets/Low poly trees - free nature pack/Meshes/Trees/Spruce/Spruce_008.fbx" id="7_dplw4"]
+[ext_resource type="Script" uid="uid://cxvrheib1ibgi" path="res://Data/objects spawning/ObjectSettings.cs" id="8_wtp0o"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_ni31j"]
 panorama = ExtResource("1_228xt")
@@ -24,6 +29,40 @@ ssr_enabled = true
 ssao_enabled = true
 ssil_enabled = true
 sdfgi_enabled = true
+glow_enabled = true
+adjustment_enabled = true
+
+[sub_resource type="Resource" id="Resource_dplw4"]
+script = ExtResource("8_wtp0o")
+scene = ExtResource("7_7qvum")
+rotationRange = Vector3(1, 1, 0)
+scaleRange = Vector2(99000, 9900)
+heightRange = Vector2(1, 1)
+metadata/_custom_type_script = "uid://cxvrheib1ibgi"
+
+[sub_resource type="Resource" id="Resource_dvhxg"]
+script = ExtResource("8_wtp0o")
+scene = ExtResource("5_wtp0o")
+rotationRange = Vector3(1, 1, 0)
+scaleRange = Vector2(28000, 18000)
+heightRange = Vector2(1, 1)
+metadata/_custom_type_script = "uid://cxvrheib1ibgi"
+
+[sub_resource type="Resource" id="Resource_qax1x"]
+script = ExtResource("8_wtp0o")
+scene = ExtResource("6_dvhxg")
+rotationRange = Vector3(1, 1, 0)
+scaleRange = Vector2(28000, 18000)
+heightRange = Vector2(1, 1)
+metadata/_custom_type_script = "uid://cxvrheib1ibgi"
+
+[sub_resource type="Resource" id="Resource_mh6t7"]
+script = ExtResource("8_wtp0o")
+scene = ExtResource("7_dplw4")
+rotationRange = Vector3(1, 1, 0)
+scaleRange = Vector2(28000, 18000)
+heightRange = Vector2(1, 1)
+metadata/_custom_type_script = "uid://cxvrheib1ibgi"
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_sl3vb"]
 frequency = 0.0001
@@ -87,14 +126,21 @@ metadata/_custom_type_script = "uid://ierrqo2ukh5f"
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_73fnb")
 
-[node name="TerrainGenControler" type="Node3D" parent="." node_paths=PackedStringArray("terrainLayout", "Player", "noiseController")]
+[node name="Objects spawing controller" type="Node3D" parent="." node_paths=PackedStringArray("terrainGenController")]
+script = ExtResource("6_ej8ax")
+terrainGenController = NodePath("../TerrainGenControler")
+objectPool = [SubResource("Resource_dplw4"), SubResource("Resource_dvhxg"), SubResource("Resource_qax1x"), SubResource("Resource_mh6t7")]
+density = 10
+
+[node name="TerrainGenControler" type="Node3D" parent="." node_paths=PackedStringArray("objectsSpawningController", "terrainLayout", "Player", "noiseController")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -876.423)
 script = ExtResource("2_4sc0t")
+objectsSpawningController = NodePath("../Objects spawing controller")
 TerrainGenerationPrefab = ExtResource("3_s3sds")
 terrainLayout = NodePath("../Layout")
 Player = NodePath("../Player")
 ViewDistance = 10000.0
-terrainSize = 100.0
+terrainSize = 600.0
 terrainScale = 8.0
 waterLevelHeight = 1314.29
 noiseController = NodePath("nosie controller")
@@ -105,11 +151,8 @@ terrainGenController = NodePath("..")
 components = [SubResource("Resource_7qvum"), SubResource("Resource_sajgy"), SubResource("Resource_ej8ax"), SubResource("Resource_wtp0o"), SubResource("Resource_s3sds")]
 heightModifier = 500.0
 
-[node name="Ash" parent="TerrainGenControler" instance=ExtResource("6_ej8ax")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 154385, -203.4, -100111)
-
 [node name="Player" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 157188, 3773.63, -96658.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24769, 0, 286.086)
 
 [node name="Layout" type="Node3D" parent="."]
 

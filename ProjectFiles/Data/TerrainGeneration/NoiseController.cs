@@ -1,9 +1,9 @@
 using Godot;
-[Tool]
+[Tool, GlobalClass]
 public partial class NoiseController : Node {
 
     [Export] TerrainGenController terrainGenController;
-    [Export] float seed;
+    [Export] public uint seed;
     [Export] public NoiseComponent[] components;
 
     [Export] uint terrainSmoothnessNoiseIndex;

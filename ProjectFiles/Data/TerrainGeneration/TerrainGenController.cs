@@ -3,13 +3,14 @@ using System.Collections.Generic;
 [Tool]
 public partial class TerrainGenController : Node {
 
+    [Export] ObjectsSpawningController objectsSpawningController;
     [Export] bool forceRegenerate = new();
     [Export] PackedScene TerrainGenerationPrefab;
     [Export] Node3D terrainLayout;
     [Export] public Node3D Player;
 
     [Export] float ViewDistance;
-    [Export] float terrainSize;
+    [Export] public float terrainSize;
 
     Dictionary<Vector2I, TerrainGeneration> terrainDisplays = new();
 
@@ -19,7 +20,7 @@ public partial class TerrainGenController : Node {
     [Export] float waterLevelHeight;
     [Export] float terrainBaseHeight = 2000;
 
-    [Export] NoiseController noiseController;
+    [Export] public NoiseController noiseController;
     int frameIndex = 0;
 
 
@@ -81,7 +82,9 @@ public partial class TerrainGenController : Node {
                 if (terrainDisplays.ContainsKey(key))
                     continue;
 
-                SpawnTerrain(key);
+                SpawnTerrain(key, out Vector3 spawnPoint, out Node3D node);
+                objectsSpawningController.SpawnObjectsOnTerrain(new Vector2(spawnPoint.X, spawnPoint.Z), node);
+
                 spawnedTerrains++;
 
                 if (terrainsPerFrame == spawnedTerrains && !spawnAll)
@@ -99,7 +102,6 @@ public partial class TerrainGenController : Node {
                 terrainValePair.Value.QueueFree();
                 toRemove.Add(terrainValePair.Key);
             }
-
         }
 
         foreach (var item in toRemove) {
@@ -108,7 +110,6 @@ public partial class TerrainGenController : Node {
     }
 
     void WhatTerrainDoYouNeedToLoad(out int maxX, out int minX, out int maxY, out int minY) {
-
         var playerPos = Player.GlobalPosition;
 
         maxX = Mathf.CeilToInt((playerPos.X + ViewDistance) / RealTerrainSize);
@@ -119,8 +120,8 @@ public partial class TerrainGenController : Node {
     }
 
     float RealTerrainSize => terrainSize * terrainScale;
-    void SpawnTerrain(Vector2I positionOnAGrid) {
-        var node = TerrainGenerationPrefab.Instantiate(PackedScene.GenEditState.Main);
+    void SpawnTerrain(Vector2I positionOnAGrid, out Vector3 spawnPoint, out Node3D node) {
+        node = (Node3D)TerrainGenerationPrefab.Instantiate(PackedScene.GenEditState.Main);
         terrainLayout.AddChild(node);
         var terrain = (TerrainGeneration)node;
 
@@ -132,8 +133,9 @@ public partial class TerrainGenController : Node {
 
 
         terrain.Scale = new Vector3(terrainScale, terrainScale, terrainScale);
-        Vector3 position = new(positionOnAGrid.X * RealTerrainSize, terrainBaseHeight, positionOnAGrid.Y * RealTerrainSize);
-        terrain.Position = position;
+
+        spawnPoint = new(positionOnAGrid.X * RealTerrainSize, terrainBaseHeight, positionOnAGrid.Y * RealTerrainSize);
+        terrain.Position = spawnPoint;
 
         terrain.UpdateMesh();
     }
