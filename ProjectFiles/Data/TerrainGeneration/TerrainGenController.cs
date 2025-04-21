@@ -16,7 +16,7 @@ public partial class TerrainGenController : Node {
 
     [Export] public float terrainScale;
     [Export] int framesPerUpdate = 100;
-
+    [Export] int terrainTrianglesSize;
     [Export] float waterLevelHeight;
     [Export] float terrainBaseHeight = 2000;
 
@@ -130,7 +130,7 @@ public partial class TerrainGenController : Node {
         terrain.size = terrainSize;
         terrain.noiseController = noiseController;
         terrain.waterLevelHeight = waterLevelHeight;
-
+        terrain.terrainTrianglesSize = terrainTrianglesSize;
 
         terrain.Scale = new Vector3(terrainScale, terrainScale, terrainScale);
 

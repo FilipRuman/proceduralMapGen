@@ -139,20 +139,22 @@ objectsSpawningController = NodePath("../Objects spawing controller")
 TerrainGenerationPrefab = ExtResource("3_s3sds")
 terrainLayout = NodePath("../Layout")
 Player = NodePath("../Player")
-ViewDistance = 10000.0
-terrainSize = 600.0
+ViewDistance = 1000.0
+terrainSize = 1000.0
 terrainScale = 8.0
+terrainTrianglesSize = 5
 waterLevelHeight = 1314.29
+terrainBaseHeight = 0.0
 noiseController = NodePath("nosie controller")
 
 [node name="nosie controller" type="Node" parent="TerrainGenControler" node_paths=PackedStringArray("terrainGenController")]
 script = ExtResource("5_s3sds")
 terrainGenController = NodePath("..")
 components = [SubResource("Resource_7qvum"), SubResource("Resource_sajgy"), SubResource("Resource_ej8ax"), SubResource("Resource_wtp0o"), SubResource("Resource_s3sds")]
-heightModifier = 500.0
+heightModifier = 10.0
 
 [node name="Player" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24769, 0, 286.086)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 286.086)
 
 [node name="Layout" type="Node3D" parent="."]
 

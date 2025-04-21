@@ -8,6 +8,7 @@ public partial class TerrainGeneration : Node3D {
     [Export] CollisionShape3D collisionShape;
     [Export] public MeshInstance3D water;
     [Export] int waterResolution = 2;
+    public int terrainTrianglesSize = 2;
     public NoiseController noiseController;
 
     public float size = 200;
@@ -37,7 +38,7 @@ public partial class TerrainGeneration : Node3D {
         var st = new SurfaceTool();
         st.Begin(Mesh.PrimitiveType.Triangles);
 
-        int loopDimensionSize = Mathf.CeilToInt(size);
+        int loopDimensionSize = Mathf.CeilToInt(size / terrainTrianglesSize);
 
         GenerateVertexes(loopDimensionSize, st);
         GenerateIndexes(st, loopDimensionSize);
@@ -68,14 +69,16 @@ public partial class TerrainGeneration : Node3D {
     }
 
     private void GenerateVertexes(int loopDimensionSize, SurfaceTool st) {
-        float distancePerIndex = loopDimensionSize;
+        float distancePerIndex = terrainTrianglesSize;
         for (uint x = 0; x < loopDimensionSize; x++) {
             for (uint z = 0; z < loopDimensionSize; z++) {
+                var uv = new Vector2(Mathf.InverseLerp(0, loopDimensionSize, x), Mathf.InverseLerp(0, loopDimensionSize, z));
+                st.SetUV(uv);
+
                 var noisePosition = new Vector2(x, z) * distancePerIndex;
                 var vertex = new Vector3(noisePosition.X, GetHeight(noisePosition), noisePosition.Y);
                 st.AddVertex(vertex);
-                var uv = new Vector2(Mathf.InverseLerp(0, loopDimensionSize, x), Mathf.InverseLerp(0, loopDimensionSize, z));
-                st.SetUV(uv);
+
             }
         }
     }

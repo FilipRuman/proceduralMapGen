@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://hfdhtcf08syl"]
+
+[ext_resource type="Shader" uid="uid://dyj1cp70vlqb8" path="res://Data/materials/terrainTexture.gdshader" id="1_b0gxm"]
+[ext_resource type="Texture2D" uid="uid://ckilid7j6fjod" path="res://Data/ground textures/ground6_Diffuse.tga" id="2_b0gxm"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_b0gxm")
+shader_parameter/textureSampler = ExtResource("2_b0gxm")
