@@ -2,7 +2,7 @@
 using Godot;
 [Tool]
 public partial class TerrainGeneration : Node3D {
-
+    public TerrainGenController terrainGenController;
     [Export] ShaderMaterial material;
     [Export] MeshInstance3D mesh;
     [Export] CollisionShape3D collisionShape;
@@ -11,7 +11,6 @@ public partial class TerrainGeneration : Node3D {
     public int terrainTrianglesSize = 2;
     public NoiseController noiseController;
 
-    public float size = 200;
     public float waterLevelHeight;
 
     public float GetHeight(Vector2 posOnTerrain) => noiseController.GetValue(posOnTerrain, GlobalPosition);
@@ -20,7 +19,7 @@ public partial class TerrainGeneration : Node3D {
         var waterMesh = new PlaneMesh {
             SubdivideDepth = waterResolution / 2,
             SubdivideWidth = waterResolution / 2,
-            Size = Vector2.One * size
+            Size = Vector2.One * terrainGenController.terrainSize
         };
         water.Mesh = waterMesh;
         water.Position += Vector3.Up * (waterLevelHeight - GlobalPosition.Y);
@@ -30,7 +29,7 @@ public partial class TerrainGeneration : Node3D {
         mesh.Mesh = arrayMesh;
         collisionShape.Shape = arrayMesh.CreateTrimeshShape();
         mesh.SetSurfaceOverrideMaterial(0, material);
-
+        mesh.Position = new Vector3(terrainGenController.terrainOffset, 0, terrainGenController.terrainOffset);
     }
 
 
@@ -38,7 +37,7 @@ public partial class TerrainGeneration : Node3D {
         var st = new SurfaceTool();
         st.Begin(Mesh.PrimitiveType.Triangles);
 
-        int loopDimensionSize = Mathf.CeilToInt(size / terrainTrianglesSize);
+        int loopDimensionSize = Mathf.CeilToInt(terrainGenController.terrainSize / terrainTrianglesSize);
 
         GenerateVertexes(loopDimensionSize, st);
         GenerateIndexes(st, loopDimensionSize);
