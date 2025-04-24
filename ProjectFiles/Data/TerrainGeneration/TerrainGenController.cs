@@ -24,7 +24,7 @@ public partial class TerrainGenController : Node {
     [Export] int framesPerUpdate = 100;
     [Export] int terrainTrianglesSize;
     [Export] float waterLevelHeight;
-    [Export] float terrainBaseHeight = 2000;
+    [Export] public float terrainBaseHeight = 2000;
 
     [Export] public NoiseController noiseController;
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://cdy6pk1gvk4w5"]
+[gd_scene load_steps=51 format=3 uid="uid://cdy6pk1gvk4w5"]
 
 [ext_resource type="Texture2D" uid="uid://bkaqlxab1w1ta" path="res://Data/DayInTheClouds4k.hdr" id="1_228xt"]
 [ext_resource type="Script" uid="uid://bv8fxqvemqtej" path="res://Data/TerrainGeneration/TerrainGenController.cs" id="2_4sc0t"]
@@ -11,6 +11,12 @@
 [ext_resource type="PackedScene" uid="uid://860bo1v5ajhi" path="res://Data/objects spawning/Assets/Low poly trees - free nature pack/Meshes/Rocks/Rock.fbx" id="7_7qvum"]
 [ext_resource type="PackedScene" uid="uid://ixfnad24m0q4" path="res://Data/objects spawning/Assets/Low poly trees - free nature pack/Meshes/Trees/Spruce/Spruce_008.fbx" id="7_dplw4"]
 [ext_resource type="Script" uid="uid://cxvrheib1ibgi" path="res://Data/objects spawning/ObjectSettings.cs" id="8_wtp0o"]
+[ext_resource type="Script" uid="uid://diieolgyo83pr" path="res://Data/materials/TerrainShaderConfigurator.cs" id="12_7knlf"]
+[ext_resource type="Material" uid="uid://hfdhtcf08syl" path="res://Data/materials/TerrainTextureMat.tres" id="13_a4h70"]
+[ext_resource type="Script" uid="uid://cd1cw73h0w3vt" path="res://Data/materials/TerrainShaderLayer.cs" id="14_cv3hs"]
+[ext_resource type="Texture2D" uid="uid://cpdidpvim1bwa" path="res://Data/ground textures/Grass_Moss_BaseColor.png" id="15_7knlf"]
+[ext_resource type="Texture2D" uid="uid://dc6ewllvtanqs" path="res://Data/ground textures/Snow_BaseColor.png" id="17_cv3hs"]
+[ext_resource type="Texture2D" uid="uid://drci6sj84ad82" path="res://Data/ground textures/Muddy_BaseColor.png" id="19_j8fmr"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_ni31j"]
 panorama = ExtResource("1_228xt")
@@ -35,7 +41,7 @@ adjustment_enabled = true
 [sub_resource type="Resource" id="Resource_dplw4"]
 script = ExtResource("8_wtp0o")
 scene = ExtResource("7_7qvum")
-rotationRange = Vector3(1, 1, 0)
+rotationRange = Vector3(15, 15, 15)
 scaleRange = Vector2(99000, 9900)
 heightRange = Vector2(1, 1)
 metadata/_custom_type_script = "uid://cxvrheib1ibgi"
@@ -43,7 +49,7 @@ metadata/_custom_type_script = "uid://cxvrheib1ibgi"
 [sub_resource type="Resource" id="Resource_dvhxg"]
 script = ExtResource("8_wtp0o")
 scene = ExtResource("5_wtp0o")
-rotationRange = Vector3(1, 1, 0)
+rotationRange = Vector3(15, 15, 15)
 scaleRange = Vector2(28000, 18000)
 heightRange = Vector2(1, 1)
 metadata/_custom_type_script = "uid://cxvrheib1ibgi"
@@ -51,7 +57,7 @@ metadata/_custom_type_script = "uid://cxvrheib1ibgi"
 [sub_resource type="Resource" id="Resource_qax1x"]
 script = ExtResource("8_wtp0o")
 scene = ExtResource("6_dvhxg")
-rotationRange = Vector3(1, 1, 0)
+rotationRange = Vector3(15, 15, 15)
 scaleRange = Vector2(28000, 18000)
 heightRange = Vector2(1, 1)
 metadata/_custom_type_script = "uid://cxvrheib1ibgi"
@@ -59,7 +65,7 @@ metadata/_custom_type_script = "uid://cxvrheib1ibgi"
 [sub_resource type="Resource" id="Resource_mh6t7"]
 script = ExtResource("8_wtp0o")
 scene = ExtResource("7_dplw4")
-rotationRange = Vector3(1, 1, 0)
+rotationRange = Vector3(15, 15, 15)
 scaleRange = Vector2(28000, 18000)
 heightRange = Vector2(1, 1)
 metadata/_custom_type_script = "uid://cxvrheib1ibgi"
@@ -71,7 +77,7 @@ fractal_octaves = 1
 [sub_resource type="Resource" id="Resource_7qvum"]
 script = ExtResource("5_ej8ax")
 noise = SubResource("FastNoiseLite_sl3vb")
-strength = 2.0
+strength = 1.0
 frequencyModifier = 0.1
 detailLevel = 0.0
 metadata/_custom_type_script = "uid://ierrqo2ukh5f"
@@ -83,7 +89,7 @@ fractal_type = 0
 [sub_resource type="Resource" id="Resource_sajgy"]
 script = ExtResource("5_ej8ax")
 noise = SubResource("FastNoiseLite_wtp0o")
-strength = 0.415
+strength = 0.208
 frequencyModifier = 1.0
 detailLevel = 0.35
 metadata/_custom_type_script = "uid://ierrqo2ukh5f"
@@ -95,7 +101,7 @@ fractal_octaves = 1
 [sub_resource type="Resource" id="Resource_ej8ax"]
 script = ExtResource("5_ej8ax")
 noise = SubResource("FastNoiseLite_s3sds")
-strength = 0.4
+strength = 0.2
 frequencyModifier = 1.25
 detailLevel = 1.0
 metadata/_custom_type_script = "uid://ierrqo2ukh5f"
@@ -108,7 +114,7 @@ fractal_octaves = 2
 [sub_resource type="Resource" id="Resource_wtp0o"]
 script = ExtResource("5_ej8ax")
 noise = SubResource("FastNoiseLite_7qvum")
-strength = 0.2
+strength = 0.1
 frequencyModifier = 2.0
 detailLevel = 1.0
 metadata/_custom_type_script = "uid://ierrqo2ukh5f"
@@ -116,10 +122,105 @@ metadata/_custom_type_script = "uid://ierrqo2ukh5f"
 [sub_resource type="Resource" id="Resource_s3sds"]
 script = ExtResource("5_ej8ax")
 noise = SubResource("FastNoiseLite_7qvum")
-strength = 0.2
+strength = 0.1
 frequencyModifier = 4.0
 detailLevel = 1.0
 metadata/_custom_type_script = "uid://ierrqo2ukh5f"
+
+[sub_resource type="Gradient" id="Gradient_a4h70"]
+offsets = PackedFloat32Array(0.452381, 0.642857)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_cv3hs"]
+gradient = SubResource("Gradient_a4h70")
+
+[sub_resource type="Resource" id="Resource_rjbey"]
+script = ExtResource("14_cv3hs")
+brightness = 1.0
+tint = Vector3(0, 0, 1)
+visibilityHeight = SubResource("GradientTexture1D_cv3hs")
+tintStrength = 0.0
+textureScale = 1.0
+textures = ExtResource("17_cv3hs")
+textureSaturation = 0.0
+metadata/_custom_type_script = "uid://cd1cw73h0w3vt"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_cv3hs"]
+load_path = "res://.godot/imported/Rock_BaseColor.png-03380937a847177be4dc621941dda000.ctex"
+
+[sub_resource type="Gradient" id="Gradient_j8fmr"]
+offsets = PackedFloat32Array(0.369048, 0.60119, 0.767857, 0.880952)
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_drcbm"]
+gradient = SubResource("Gradient_j8fmr")
+
+[sub_resource type="Resource" id="Resource_at3n3"]
+script = ExtResource("14_cv3hs")
+brightness = 1.0
+tint = Vector3(0, 1, 0)
+visibilityHeight = SubResource("GradientTexture1D_drcbm")
+tintStrength = 0.0
+textureScale = 5.995
+textures = SubResource("CompressedTexture2D_cv3hs")
+textureSaturation = 0.0
+metadata/_custom_type_script = "uid://cd1cw73h0w3vt"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_gp4ot"]
+load_path = "res://.godot/imported/Grass_Dry_BaseColor.png-5141c6f3c6e0e1711d39d2e101e183a5.ctex"
+
+[sub_resource type="Gradient" id="Gradient_sj6lj"]
+offsets = PackedFloat32Array(0.229167, 0.431548, 0.610119)
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_fvj5u"]
+gradient = SubResource("Gradient_sj6lj")
+
+[sub_resource type="Resource" id="Resource_6cyyt"]
+script = ExtResource("14_cv3hs")
+brightness = 1.0
+tint = Vector3(0, 1, 0)
+visibilityHeight = SubResource("GradientTexture1D_fvj5u")
+tintStrength = 0.0
+textureScale = 5.995
+textures = SubResource("CompressedTexture2D_gp4ot")
+textureSaturation = 0.0
+metadata/_custom_type_script = "uid://cd1cw73h0w3vt"
+
+[sub_resource type="Gradient" id="Gradient_41py0"]
+offsets = PackedFloat32Array(0.22619, 0.327381, 0.488095)
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_6cufk"]
+gradient = SubResource("Gradient_41py0")
+
+[sub_resource type="Resource" id="Resource_drcbm"]
+script = ExtResource("14_cv3hs")
+brightness = 1.0
+tint = Vector3(0, 1, 0)
+visibilityHeight = SubResource("GradientTexture1D_6cufk")
+tintStrength = 0.0
+textureScale = 5.995
+textures = ExtResource("15_7knlf")
+textureSaturation = 0.0
+metadata/_custom_type_script = "uid://cd1cw73h0w3vt"
+
+[sub_resource type="Gradient" id="Gradient_rjbey"]
+offsets = PackedFloat32Array(0.235119, 0.380952)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_rjbey"]
+gradient = SubResource("Gradient_rjbey")
+
+[sub_resource type="Resource" id="Resource_656t2"]
+script = ExtResource("14_cv3hs")
+brightness = 1.0
+tint = Vector3(0, 1, 0)
+visibilityHeight = SubResource("GradientTexture1D_rjbey")
+tintStrength = 0.0
+textureScale = 5.995
+textures = ExtResource("19_j8fmr")
+textureSaturation = -0.09
+metadata/_custom_type_script = "uid://cd1cw73h0w3vt"
 
 [node name="Scene" type="Node3D"]
 
@@ -139,22 +240,37 @@ objectsSpawningController = NodePath("../Objects spawing controller")
 TerrainGenerationPrefab = ExtResource("3_s3sds")
 terrainLayout = NodePath("../Layout")
 Player = NodePath("../Player")
-ViewDistance = 1000.0
-terrainSize = 1000.0
+ViewDistance = 40000.0
+terrainMarginSize = 0.001
+terrainRawSize = 1000.0
+heightModifier = 4000.0
 terrainScale = 8.0
-terrainTrianglesSize = 5
-waterLevelHeight = 1314.29
+terrainTrianglesSize = 20
+waterLevelHeight = -2300.0
 terrainBaseHeight = 0.0
-noiseController = NodePath("nosie controller")
+noiseController = NodePath("noise controller")
 
-[node name="nosie controller" type="Node" parent="TerrainGenControler" node_paths=PackedStringArray("terrainGenController")]
+[node name="noise controller" type="Node" parent="TerrainGenControler" node_paths=PackedStringArray("terrainGenController")]
 script = ExtResource("5_s3sds")
 terrainGenController = NodePath("..")
 components = [SubResource("Resource_7qvum"), SubResource("Resource_sajgy"), SubResource("Resource_ej8ax"), SubResource("Resource_wtp0o"), SubResource("Resource_s3sds")]
-heightModifier = 10.0
+
+[node name="material configurator" type="Node" parent="TerrainGenControler" node_paths=PackedStringArray("terrainGenController")]
+script = ExtResource("12_7knlf")
+terrainGenController = NodePath("..")
+update = true
+material = ExtResource("13_a4h70")
+layers = [SubResource("Resource_rjbey"), SubResource("Resource_at3n3"), SubResource("Resource_6cyyt"), SubResource("Resource_drcbm"), SubResource("Resource_656t2")]
+minMaxHeight = Vector2(-30000, 30000)
+globalScale = 1656.97
+globalBrightness = 1.0
+saturation = 0.235
+
+[node name="test" type="Node3D" parent="TerrainGenControler"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35548.7, -28870.1, -34562.2)
 
 [node name="Player" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 286.086)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22873.5, 0, -62018.9)
 
 [node name="Layout" type="Node3D" parent="."]
 

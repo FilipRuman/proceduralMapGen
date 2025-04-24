@@ -1,9 +1,62 @@
-[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://hfdhtcf08syl"]
+[gd_resource type="ShaderMaterial" load_steps=17 format=3 uid="uid://hfdhtcf08syl"]
 
 [ext_resource type="Shader" uid="uid://dyj1cp70vlqb8" path="res://Data/materials/terrainTexture.gdshader" id="1_b0gxm"]
-[ext_resource type="Texture2D" uid="uid://ckilid7j6fjod" path="res://Data/ground textures/ground6_Diffuse.tga" id="2_b0gxm"]
+[ext_resource type="Texture2D" uid="uid://cpdidpvim1bwa" path="res://Data/ground textures/Grass_Moss_BaseColor.png" id="2_b0gxm"]
+[ext_resource type="Texture2D" uid="uid://dc6ewllvtanqs" path="res://Data/ground textures/Snow_BaseColor.png" id="2_fvsx6"]
+[ext_resource type="Texture2D" uid="uid://drci6sj84ad82" path="res://Data/ground textures/Muddy_BaseColor.png" id="6_7itsy"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_cv3hs"]
+load_path = "res://.godot/imported/Rock_BaseColor.png-03380937a847177be4dc621941dda000.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_gp4ot"]
+load_path = "res://.godot/imported/Grass_Dry_BaseColor.png-5141c6f3c6e0e1711d39d2e101e183a5.ctex"
+
+[sub_resource type="Gradient" id="Gradient_a4h70"]
+offsets = PackedFloat32Array(0.452381, 0.642857)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_cv3hs"]
+gradient = SubResource("Gradient_a4h70")
+
+[sub_resource type="Gradient" id="Gradient_j8fmr"]
+offsets = PackedFloat32Array(0.369048, 0.556548, 0.866071)
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_drcbm"]
+gradient = SubResource("Gradient_j8fmr")
+
+[sub_resource type="Gradient" id="Gradient_sj6lj"]
+offsets = PackedFloat32Array(0.229167, 0.431548, 0.610119)
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_fvj5u"]
+gradient = SubResource("Gradient_sj6lj")
+
+[sub_resource type="Gradient" id="Gradient_41py0"]
+offsets = PackedFloat32Array(0.22619, 0.327381, 0.488095)
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_6cufk"]
+gradient = SubResource("Gradient_41py0")
+
+[sub_resource type="Gradient" id="Gradient_rjbey"]
+offsets = PackedFloat32Array(0.235119, 0.380952)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_rjbey"]
+gradient = SubResource("Gradient_rjbey")
 
 [resource]
 render_priority = 0
 shader = ExtResource("1_b0gxm")
-shader_parameter/textureSampler = ExtResource("2_b0gxm")
+shader_parameter/usedLayersCount = 5
+shader_parameter/brightness = PackedFloat32Array(1, 1, 1, 1, 1)
+shader_parameter/tint = PackedVector3Array(0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0)
+shader_parameter/tintStrength = PackedFloat32Array(0, 0, 0, 0, 0)
+shader_parameter/textureScale = PackedFloat32Array(1, 5.995, 5.995, 5.995, 5.995)
+shader_parameter/textureSaturation = PackedFloat32Array(0, 0, 0, 0, 1.135)
+shader_parameter/textures = [ExtResource("2_fvsx6"), SubResource("CompressedTexture2D_cv3hs"), SubResource("CompressedTexture2D_gp4ot"), ExtResource("2_b0gxm"), ExtResource("6_7itsy")]
+shader_parameter/visibilityHeight = [SubResource("GradientTexture1D_cv3hs"), SubResource("GradientTexture1D_drcbm"), SubResource("GradientTexture1D_fvj5u"), SubResource("GradientTexture1D_6cufk"), SubResource("GradientTexture1D_rjbey")]
+shader_parameter/minMaxHeight = Vector2(-30000, 30000)
+shader_parameter/globalScale = 1656.97
+shader_parameter/globalBrightness = 1.0
+shader_parameter/saturation = 0.235
