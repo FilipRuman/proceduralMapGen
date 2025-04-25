@@ -31,6 +31,7 @@ public partial class TerrainGenController : Node {
     int frameIndex = 0;
 
 
+    [Export] public Vector2 minMaxHeightForMaterialsAndObjects;
 
     int lastMaxX, lastMinX, lastMaxY, lastMinY;
 

@@ -3,12 +3,12 @@
 [ext_resource type="Texture2D" uid="uid://bkaqlxab1w1ta" path="res://Data/DayInTheClouds4k.hdr" id="1_228xt"]
 [ext_resource type="Script" uid="uid://bv8fxqvemqtej" path="res://Data/TerrainGeneration/TerrainGenController.cs" id="2_4sc0t"]
 [ext_resource type="PackedScene" uid="uid://c44h3h2eg2lix" path="res://Data/TerrainGeneration/terrain_generation.tscn" id="3_s3sds"]
+[ext_resource type="PackedScene" uid="uid://byr5ui4jwbkxu" path="res://Data/objects spawning/Assets/Low poly trees - free nature pack/Meshes/Trees/Ash/Ash.fbx" id="5_cv3hs"]
 [ext_resource type="Script" uid="uid://ierrqo2ukh5f" path="res://Data/TerrainGeneration/NoiseComponent.cs" id="5_ej8ax"]
 [ext_resource type="Script" uid="uid://dav4rnnxeno8o" path="res://Data/TerrainGeneration/NoiseController.cs" id="5_s3sds"]
-[ext_resource type="PackedScene" uid="uid://bp4nkn64a0fgy" path="res://Data/objects spawning/Assets/Low poly trees - free nature pack/Meshes/Trees/Birch/Birch.fbx" id="5_wtp0o"]
 [ext_resource type="PackedScene" uid="uid://dkbq814oscelf" path="res://Data/objects spawning/Assets/Low poly trees - free nature pack/Meshes/Trees/Oak/Oak.fbx" id="6_dvhxg"]
 [ext_resource type="Script" uid="uid://d2arlmtd5o7pq" path="res://Data/objects spawning/ObjectsSpawningController.cs" id="6_ej8ax"]
-[ext_resource type="PackedScene" uid="uid://860bo1v5ajhi" path="res://Data/objects spawning/Assets/Low poly trees - free nature pack/Meshes/Rocks/Rock.fbx" id="7_7qvum"]
+[ext_resource type="PackedScene" uid="uid://bis2717h6df45" path="res://Data/objects spawning/Assets/Low poly trees - free nature pack/Meshes/Trees/Poplar/Poplar.fbx" id="7_41py0"]
 [ext_resource type="PackedScene" uid="uid://ixfnad24m0q4" path="res://Data/objects spawning/Assets/Low poly trees - free nature pack/Meshes/Trees/Spruce/Spruce_008.fbx" id="7_dplw4"]
 [ext_resource type="Script" uid="uid://cxvrheib1ibgi" path="res://Data/objects spawning/ObjectSettings.cs" id="8_wtp0o"]
 [ext_resource type="Script" uid="uid://diieolgyo83pr" path="res://Data/materials/TerrainShaderConfigurator.cs" id="12_7knlf"]
@@ -38,36 +38,40 @@ sdfgi_enabled = true
 glow_enabled = true
 adjustment_enabled = true
 
-[sub_resource type="Resource" id="Resource_dplw4"]
-script = ExtResource("8_wtp0o")
-scene = ExtResource("7_7qvum")
-rotationRange = Vector3(15, 15, 15)
-scaleRange = Vector2(99000, 9900)
-heightRange = Vector2(1, 1)
-metadata/_custom_type_script = "uid://cxvrheib1ibgi"
-
-[sub_resource type="Resource" id="Resource_dvhxg"]
-script = ExtResource("8_wtp0o")
-scene = ExtResource("5_wtp0o")
-rotationRange = Vector3(15, 15, 15)
-scaleRange = Vector2(28000, 18000)
-heightRange = Vector2(1, 1)
-metadata/_custom_type_script = "uid://cxvrheib1ibgi"
-
 [sub_resource type="Resource" id="Resource_qax1x"]
 script = ExtResource("8_wtp0o")
 scene = ExtResource("6_dvhxg")
 rotationRange = Vector3(15, 15, 15)
-scaleRange = Vector2(28000, 18000)
-heightRange = Vector2(1, 1)
+scaleRange = Vector2(22680, 16200)
+heightPercentageRange = Vector2(0.174, 0.36)
+spawningRegionColor = Color(0.990007, 0, 0.266317, 1)
 metadata/_custom_type_script = "uid://cxvrheib1ibgi"
 
-[sub_resource type="Resource" id="Resource_mh6t7"]
+[sub_resource type="Resource" id="Resource_j8fmr"]
+script = ExtResource("8_wtp0o")
+scene = ExtResource("5_cv3hs")
+rotationRange = Vector3(15, 15, 15)
+scaleRange = Vector2(22680, 16200)
+heightPercentageRange = Vector2(0.262, 0.477)
+spawningRegionColor = Color(0.685246, 0.499632, 0, 1)
+metadata/_custom_type_script = "uid://cxvrheib1ibgi"
+
+[sub_resource type="Resource" id="Resource_6cufk"]
 script = ExtResource("8_wtp0o")
 scene = ExtResource("7_dplw4")
 rotationRange = Vector3(15, 15, 15)
-scaleRange = Vector2(28000, 18000)
-heightRange = Vector2(1, 1)
+scaleRange = Vector2(22680, 16200)
+heightPercentageRange = Vector2(0.5, 0.574)
+spawningRegionColor = Color(0.603122, 0.736964, 1, 1)
+metadata/_custom_type_script = "uid://cxvrheib1ibgi"
+
+[sub_resource type="Resource" id="Resource_gp4ot"]
+script = ExtResource("8_wtp0o")
+scene = ExtResource("7_41py0")
+rotationRange = Vector3(15, 15, 15)
+scaleRange = Vector2(22680, 16200)
+heightPercentageRange = Vector2(0.561, 0.604)
+spawningRegionColor = Color(0.171634, 0.263872, 1, 1)
 metadata/_custom_type_script = "uid://cxvrheib1ibgi"
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_sl3vb"]
@@ -90,8 +94,8 @@ fractal_type = 0
 script = ExtResource("5_ej8ax")
 noise = SubResource("FastNoiseLite_wtp0o")
 strength = 0.208
-frequencyModifier = 1.0
-detailLevel = 0.35
+frequencyModifier = 0.555
+detailLevel = 0.309
 metadata/_custom_type_script = "uid://ierrqo2ukh5f"
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_s3sds"]
@@ -101,8 +105,8 @@ fractal_octaves = 1
 [sub_resource type="Resource" id="Resource_ej8ax"]
 script = ExtResource("5_ej8ax")
 noise = SubResource("FastNoiseLite_s3sds")
-strength = 0.2
-frequencyModifier = 1.25
+strength = 0.1
+frequencyModifier = 1.055
 detailLevel = 1.0
 metadata/_custom_type_script = "uid://ierrqo2ukh5f"
 
@@ -114,7 +118,7 @@ fractal_octaves = 2
 [sub_resource type="Resource" id="Resource_wtp0o"]
 script = ExtResource("5_ej8ax")
 noise = SubResource("FastNoiseLite_7qvum")
-strength = 0.1
+strength = 0.05
 frequencyModifier = 2.0
 detailLevel = 1.0
 metadata/_custom_type_script = "uid://ierrqo2ukh5f"
@@ -122,7 +126,7 @@ metadata/_custom_type_script = "uid://ierrqo2ukh5f"
 [sub_resource type="Resource" id="Resource_s3sds"]
 script = ExtResource("5_ej8ax")
 noise = SubResource("FastNoiseLite_7qvum")
-strength = 0.1
+strength = 0.05
 frequencyModifier = 4.0
 detailLevel = 1.0
 metadata/_custom_type_script = "uid://ierrqo2ukh5f"
@@ -230,7 +234,7 @@ environment = SubResource("Environment_73fnb")
 [node name="Objects spawing controller" type="Node3D" parent="." node_paths=PackedStringArray("terrainGenController")]
 script = ExtResource("6_ej8ax")
 terrainGenController = NodePath("../TerrainGenControler")
-objectPool = [SubResource("Resource_dplw4"), SubResource("Resource_dvhxg"), SubResource("Resource_qax1x"), SubResource("Resource_mh6t7")]
+objectPool = [SubResource("Resource_qax1x"), SubResource("Resource_j8fmr"), SubResource("Resource_6cufk"), SubResource("Resource_gp4ot")]
 density = 10
 
 [node name="TerrainGenControler" type="Node3D" parent="." node_paths=PackedStringArray("objectsSpawningController", "terrainLayout", "Player", "noiseController")]
@@ -245,23 +249,24 @@ terrainMarginSize = 0.001
 terrainRawSize = 1000.0
 heightModifier = 4000.0
 terrainScale = 8.0
-terrainTrianglesSize = 20
+terrainTrianglesSize = 40
 waterLevelHeight = -2300.0
 terrainBaseHeight = 0.0
 noiseController = NodePath("noise controller")
+minMaxHeightForMaterialsAndObjects = Vector2(-30000, 40000)
 
 [node name="noise controller" type="Node" parent="TerrainGenControler" node_paths=PackedStringArray("terrainGenController")]
 script = ExtResource("5_s3sds")
 terrainGenController = NodePath("..")
 components = [SubResource("Resource_7qvum"), SubResource("Resource_sajgy"), SubResource("Resource_ej8ax"), SubResource("Resource_wtp0o"), SubResource("Resource_s3sds")]
 
-[node name="material configurator" type="Node" parent="TerrainGenControler" node_paths=PackedStringArray("terrainGenController")]
+[node name="material configurator" type="Node" parent="TerrainGenControler" node_paths=PackedStringArray("terrainGenController", "objectsSpawningController")]
 script = ExtResource("12_7knlf")
 terrainGenController = NodePath("..")
+objectsSpawningController = NodePath("../../Objects spawing controller")
 update = true
 material = ExtResource("13_a4h70")
 layers = [SubResource("Resource_rjbey"), SubResource("Resource_at3n3"), SubResource("Resource_6cyyt"), SubResource("Resource_drcbm"), SubResource("Resource_656t2")]
-minMaxHeight = Vector2(-30000, 30000)
 globalScale = 1656.97
 globalBrightness = 1.0
 saturation = 0.235
@@ -270,16 +275,18 @@ saturation = 0.235
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35548.7, -28870.1, -34562.2)
 
 [node name="Player" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22873.5, 0, -62018.9)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 647765, 0, 296680)
 
 [node name="Layout" type="Node3D" parent="."]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.123604, 0.957586, -0.260292, -0.306487, -0.21264, -0.92782, -0.943815, 0.194458, 0.267205, 0, 0, 0)
+transform = Transform3D(0.123604, 0.957586, -0.260292, -0.809746, 0.248953, 0.531351, 0.573614, 0.145094, 0.806173, 0, 0, 0)
 light_energy = 1.84
 light_indirect_energy = 2.555
 light_volumetric_fog_energy = 4.987
 light_specular = 0.035
+shadow_enabled = true
+shadow_normal_bias = 10.0
 directional_shadow_split_1 = 0.0
 directional_shadow_split_2 = 0.47
 directional_shadow_split_3 = 0.422

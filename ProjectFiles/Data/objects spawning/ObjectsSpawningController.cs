@@ -6,6 +6,8 @@ public partial class ObjectsSpawningController : Node3D {
     [Export] public ObjectSettings[] objectPool;
     [Export] uint density;
 
+    [Export] public bool displayObjectsSpawningRegions;
+
 
     public void SpawnObjectsOnTerrain(Vector2 globalPosition, Node parent) {
         //Objects are instantiating under the terrain node that is scaled so i have to scale positions back
@@ -18,10 +20,10 @@ public partial class ObjectsSpawningController : Node3D {
             var point = GetPositionToSpawn(globalPosition, rng, spaceState);
 
 
-            var viableObjectsList = /* GetListOfObjectsThatCanBeUsedForThisPoint(point) */ objectPool;
-            // if (viableObjectsList.Count == 0) continue;
+            var viableObjectsList = GetListOfObjectsThatCanBeUsedForThisPoint(point);
+            if (viableObjectsList.Count == 0) continue;
 
-            var objectToSpawn = viableObjectsList[rng.RandiRange(0, viableObjectsList.Length - 1)];
+            var objectToSpawn = viableObjectsList[rng.RandiRange(0, viableObjectsList.Count - 1)];
             SpawnObjectAtPoint(point, objectToSpawn, rng, parent);
         }
     }
@@ -40,8 +42,13 @@ public partial class ObjectsSpawningController : Node3D {
 
     private List<ObjectSettings> GetListOfObjectsThatCanBeUsedForThisPoint(Vector3 point) {
         List<ObjectSettings> output = new();
+
+        float heightPercentage = Mathf.Clamp(
+                Mathf.InverseLerp(terrainGenController.minMaxHeightForMaterialsAndObjects.X, terrainGenController.minMaxHeightForMaterialsAndObjects.Y, point.Y * terrainGenController.terrainScale)
+                , 0, 1);
+
         foreach (ObjectSettings @object in objectPool) {
-            if (point.Y < @object.heightRange.X || point.Y > @object.heightRange.Y)
+            if (heightPercentage < @object.heightPercentageRange.X || heightPercentage > @object.heightPercentageRange.Y)
                 continue;
             output.Add(@object);
         }

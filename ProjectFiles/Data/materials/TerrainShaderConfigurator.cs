@@ -3,12 +3,13 @@ using System.Collections.Generic;
 [Tool]
 public partial class TerrainShaderConfigurator : Node {
     [Export] TerrainGenController terrainGenController;
+    [Export] ObjectsSpawningController objectsSpawningController;
+
     [Export] bool update;
     [Export] ShaderMaterial material;
     [Export] TerrainShaderLayer[] layers;
 
 
-    [Export] Vector2 minMaxHeight;
     [Export] float globalScale;
     [Export] float globalBrightness;
     [Export] float saturation;
@@ -29,16 +30,49 @@ public partial class TerrainShaderConfigurator : Node {
         List<Texture> visibilityHeight = new(layers.Length);
         List<float> textureSaturation = new(layers.Length);
 
+        int usedLayersCount;
+        if (objectsSpawningController.displayObjectsSpawningRegions) {
+            usedLayersCount = objectsSpawningController.objectPool.Length;
+            foreach (ObjectSettings objectSetting in objectsSpawningController.objectPool) {
+                brightness.Add(1);
+                tint.Add(new(objectSetting.spawningRegionColor.R, objectSetting.spawningRegionColor.G, objectSetting.spawningRegionColor.B));
+                tintStrength.Add(1);
+                textureScale.Add(1);
+                textures.Add(new());
+                textureSaturation.Add(1);
 
-        foreach (TerrainShaderLayer layer in layers) {
-            brightness.Add(layer.brightness);
-            tint.Add(layer.tint);
-            tintStrength.Add(layer.tintStrength);
-            textureScale.Add(layer.textureScale);
-            visibilityHeight.Add(layer.visibilityHeight);
-            textures.Add(layer.textures);
-            textureSaturation.Add(layer.textureSaturation);
+
+                var texture = new GradientTexture1D();
+                texture.Gradient = new();
+
+                texture.Gradient.Offsets = [
+                    objectSetting.heightPercentageRange.X - .01f,
+                    objectSetting.heightPercentageRange.X,
+                    objectSetting.heightPercentageRange.Y,
+                    objectSetting.heightPercentageRange.Y + .01f];
+                texture.Gradient.Colors = [
+                    Color.Color8(0,0,0),
+                    Color.Color8(255,255,255),
+                    Color.Color8(255,255,255),
+                    Color.Color8(0,0,0)];
+
+
+                visibilityHeight.Add(texture);
+            }
+
+        } else {
+            usedLayersCount = layers.Length;
+            foreach (TerrainShaderLayer layer in layers) {
+                brightness.Add(layer.brightness);
+                tint.Add(layer.tint);
+                tintStrength.Add(layer.tintStrength);
+                textureScale.Add(layer.textureScale);
+                visibilityHeight.Add(layer.visibilityHeight);
+                textures.Add(layer.textures);
+                textureSaturation.Add(layer.textureSaturation);
+            }
         }
+
 
         material.SetShaderParameter("brightness", brightness.ToArray());
         material.SetShaderParameter("tint", tint.ToArray());
@@ -50,11 +84,11 @@ public partial class TerrainShaderConfigurator : Node {
         material.SetShaderParameter("textures", textures.ToArray());
 
 
-        material.SetShaderParameter("minMaxHeight", minMaxHeight);
+        material.SetShaderParameter("minMaxHeight", terrainGenController.minMaxHeightForMaterialsAndObjects);
         material.SetShaderParameter("globalScale", globalScale);
         material.SetShaderParameter("saturation", saturation);
         material.SetShaderParameter("globalBrightness", globalBrightness);
-        material.SetShaderParameter("usedLayersCount", layers.Length);
+        material.SetShaderParameter("usedLayersCount", usedLayersCount);
 
 
 
