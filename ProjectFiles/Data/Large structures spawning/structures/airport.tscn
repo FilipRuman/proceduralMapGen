@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://cs6qvb38l201k"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_cv3hs"]
+size = Vector3(9044.69, 1000, 2500)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_41py0"]
+albedo_color = Color(0.215902, 0.215902, 0.215902, 1)
+
+[node name="Airport" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("BoxMesh_cv3hs")
+surface_material_override/0 = SubResource("StandardMaterial3D_41py0")

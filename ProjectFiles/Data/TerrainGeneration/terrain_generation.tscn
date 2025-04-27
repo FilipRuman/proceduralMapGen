@@ -34,6 +34,7 @@ water = NodePath("StaticBody3D/Water")
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 
 [node name="terrain" type="MeshInstance3D" parent="StaticBody3D"]
+gi_mode = 2
 mesh = SubResource("ArrayMesh_k5xim")
 skeleton = NodePath("../../..")
 surface_material_override/0 = ExtResource("3_iwuns")

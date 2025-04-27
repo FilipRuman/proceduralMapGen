@@ -17,15 +17,17 @@ public partial class NoiseController : Node {
 
 		for (int i = 0; i < components.Length; i++) {
 			var component = components[i];
-			totalValue += component.strength * SmoothnessModifier(smoothness, component) * GetNoise(component, noisePosition);
+			float value = component.valueBasedOnNoise.SampleBaked(GetNoise(component, noisePosition));
+			totalValue += component.strength * SmoothnessModifier(smoothness, component) * value;
 		}
 		return totalValue * terrainGenController.heightModifier;
 	}
 	float GetNoise(NoiseComponent component, Vector2 pos) {
 		pos *= component.frequencyModifier;
-		return component.noise.GetNoise2D(pos.X, pos.Y);
+		float flipModifier = (component.flipped ? -1 : 1);
+		return flipModifier * component.noise.GetNoise2D(pos.X, pos.Y);
 	}
 
-	float SmoothnessModifier(float smoothness, NoiseComponent component) => 1 - component.detailLevel * smoothness;
+	float SmoothnessModifier(float smoothness, NoiseComponent component) => component.detailValueModifier.SampleBaked(smoothness);
 
 }

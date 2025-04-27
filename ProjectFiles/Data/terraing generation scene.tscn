@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=3 uid="uid://cdy6pk1gvk4w5"]
+[gd_scene load_steps=69 format=3 uid="uid://cdy6pk1gvk4w5"]
 
 [ext_resource type="Texture2D" uid="uid://bkaqlxab1w1ta" path="res://Data/DayInTheClouds4k.hdr" id="1_228xt"]
 [ext_resource type="Script" uid="uid://bv8fxqvemqtej" path="res://Data/TerrainGeneration/TerrainGenController.cs" id="2_4sc0t"]
@@ -16,7 +16,10 @@
 [ext_resource type="Script" uid="uid://cd1cw73h0w3vt" path="res://Data/materials/TerrainShaderLayer.cs" id="14_cv3hs"]
 [ext_resource type="Texture2D" uid="uid://cpdidpvim1bwa" path="res://Data/ground textures/Grass_Moss_BaseColor.png" id="15_7knlf"]
 [ext_resource type="Texture2D" uid="uid://dc6ewllvtanqs" path="res://Data/ground textures/Snow_BaseColor.png" id="17_cv3hs"]
+[ext_resource type="Script" uid="uid://d12nibw5dansb" path="res://Data/Large structures spawning/StructuresSpawningController.cs" id="18_j8fmr"]
+[ext_resource type="Script" uid="uid://bdm75jl3b4dg4" path="res://Data/Large structures spawning/Structure.cs" id="19_6cufk"]
 [ext_resource type="Texture2D" uid="uid://drci6sj84ad82" path="res://Data/ground textures/Muddy_BaseColor.png" id="19_j8fmr"]
+[ext_resource type="PackedScene" uid="uid://cs6qvb38l201k" path="res://Data/Large structures spawning/structures/airport.tscn" id="20_drcbm"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_ni31j"]
 panorama = ExtResource("1_228xt")
@@ -33,103 +36,11 @@ ambient_light_energy = 0.49
 reflected_light_source = 2
 ssr_enabled = true
 ssao_enabled = true
+ssao_power = 1.39955
 ssil_enabled = true
 sdfgi_enabled = true
 glow_enabled = true
 adjustment_enabled = true
-
-[sub_resource type="Resource" id="Resource_qax1x"]
-script = ExtResource("8_wtp0o")
-scene = ExtResource("6_dvhxg")
-rotationRange = Vector3(15, 15, 15)
-scaleRange = Vector2(22680, 16200)
-heightPercentageRange = Vector2(0.174, 0.36)
-spawningRegionColor = Color(0.990007, 0, 0.266317, 1)
-metadata/_custom_type_script = "uid://cxvrheib1ibgi"
-
-[sub_resource type="Resource" id="Resource_j8fmr"]
-script = ExtResource("8_wtp0o")
-scene = ExtResource("5_cv3hs")
-rotationRange = Vector3(15, 15, 15)
-scaleRange = Vector2(22680, 16200)
-heightPercentageRange = Vector2(0.262, 0.477)
-spawningRegionColor = Color(0.685246, 0.499632, 0, 1)
-metadata/_custom_type_script = "uid://cxvrheib1ibgi"
-
-[sub_resource type="Resource" id="Resource_6cufk"]
-script = ExtResource("8_wtp0o")
-scene = ExtResource("7_dplw4")
-rotationRange = Vector3(15, 15, 15)
-scaleRange = Vector2(22680, 16200)
-heightPercentageRange = Vector2(0.5, 0.574)
-spawningRegionColor = Color(0.603122, 0.736964, 1, 1)
-metadata/_custom_type_script = "uid://cxvrheib1ibgi"
-
-[sub_resource type="Resource" id="Resource_gp4ot"]
-script = ExtResource("8_wtp0o")
-scene = ExtResource("7_41py0")
-rotationRange = Vector3(15, 15, 15)
-scaleRange = Vector2(22680, 16200)
-heightPercentageRange = Vector2(0.561, 0.604)
-spawningRegionColor = Color(0.171634, 0.263872, 1, 1)
-metadata/_custom_type_script = "uid://cxvrheib1ibgi"
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_sl3vb"]
-frequency = 0.0001
-fractal_octaves = 1
-
-[sub_resource type="Resource" id="Resource_7qvum"]
-script = ExtResource("5_ej8ax")
-noise = SubResource("FastNoiseLite_sl3vb")
-strength = 1.0
-frequencyModifier = 0.1
-detailLevel = 0.0
-metadata/_custom_type_script = "uid://ierrqo2ukh5f"
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_wtp0o"]
-frequency = 0.0001
-fractal_type = 0
-
-[sub_resource type="Resource" id="Resource_sajgy"]
-script = ExtResource("5_ej8ax")
-noise = SubResource("FastNoiseLite_wtp0o")
-strength = 0.208
-frequencyModifier = 0.555
-detailLevel = 0.309
-metadata/_custom_type_script = "uid://ierrqo2ukh5f"
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_s3sds"]
-frequency = 0.0001
-fractal_octaves = 1
-
-[sub_resource type="Resource" id="Resource_ej8ax"]
-script = ExtResource("5_ej8ax")
-noise = SubResource("FastNoiseLite_s3sds")
-strength = 0.1
-frequencyModifier = 1.055
-detailLevel = 1.0
-metadata/_custom_type_script = "uid://ierrqo2ukh5f"
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_7qvum"]
-frequency = 0.0001
-fractal_type = 0
-fractal_octaves = 2
-
-[sub_resource type="Resource" id="Resource_wtp0o"]
-script = ExtResource("5_ej8ax")
-noise = SubResource("FastNoiseLite_7qvum")
-strength = 0.05
-frequencyModifier = 2.0
-detailLevel = 1.0
-metadata/_custom_type_script = "uid://ierrqo2ukh5f"
-
-[sub_resource type="Resource" id="Resource_s3sds"]
-script = ExtResource("5_ej8ax")
-noise = SubResource("FastNoiseLite_7qvum")
-strength = 0.05
-frequencyModifier = 4.0
-detailLevel = 1.0
-metadata/_custom_type_script = "uid://ierrqo2ukh5f"
 
 [sub_resource type="Gradient" id="Gradient_a4h70"]
 offsets = PackedFloat32Array(0.452381, 0.642857)
@@ -226,44 +137,238 @@ textures = ExtResource("19_j8fmr")
 textureSaturation = -0.09
 metadata/_custom_type_script = "uid://cd1cw73h0w3vt"
 
+[sub_resource type="Curve" id="Curve_rjbey"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0]
+point_count = 1
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_sl3vb"]
+frequency = 0.0001
+fractal_octaves = 1
+fractal_weighted_strength = 1.0
+cellular_distance_function = 1
+domain_warp_amplitude = 58.34
+domain_warp_frequency = 1.185
+domain_warp_fractal_type = 0
+domain_warp_fractal_octaves = 10
+domain_warp_fractal_lacunarity = 2.95
+
+[sub_resource type="Curve" id="Curve_cv3hs"]
+_limits = [-1.0, 1.0, -1.0, 1.0]
+_data = [Vector2(-1, -0.266338), 0.0, 0.031303, 0, 0, Vector2(-0.580247, 0.0221949), 0.256769, 0.256769, 0, 0, Vector2(0.443243, 0.142132), 0.610406, 0.610406, 0, 0, Vector2(0.778378, 0.432487), 1.22584, 1.22584, 0, 0, Vector2(1, 0.828426), 1.9533, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="Resource" id="Resource_7qvum"]
+script = ExtResource("5_ej8ax")
+debugName = "Rough map"
+flipped = true
+noise = SubResource("FastNoiseLite_sl3vb")
+strength = 1.0
+frequencyModifier = 0.2
+detailValueModifier = SubResource("Curve_rjbey")
+valueBasedOnNoise = SubResource("Curve_cv3hs")
+metadata/_custom_type_script = "uid://ierrqo2ukh5f"
+
+[sub_resource type="Curve" id="Curve_drcbm"]
+_data = [Vector2(0.0486486, 0), 0.0, 0.0, 0, 0, Vector2(0.151351, 1), 0.0, 0.0, 0, 0, Vector2(0.437838, 1), 0.0, 0.0, 0, 0, Vector2(0.586487, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_wtp0o"]
+frequency = 0.0001
+fractal_type = 0
+
+[sub_resource type="Curve" id="Curve_41py0"]
+_limits = [-1.0, 1.0, -1.0, 1.0]
+_data = [Vector2(-1, -0.0294416), 0.0, 0.235119, 0, 0, Vector2(1, 1), 2.27885, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Resource" id="Resource_sajgy"]
+script = ExtResource("5_ej8ax")
+debugName = "Mountains"
+flipped = false
+noise = SubResource("FastNoiseLite_wtp0o")
+strength = 0.4
+frequencyModifier = 0.4
+detailValueModifier = SubResource("Curve_drcbm")
+valueBasedOnNoise = SubResource("Curve_41py0")
+metadata/_custom_type_script = "uid://ierrqo2ukh5f"
+
+[sub_resource type="Curve" id="Curve_656t2"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0]
+point_count = 1
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_7qvum"]
+noise_type = 0
+frequency = 0.0001
+fractal_octaves = 1
+
+[sub_resource type="Curve" id="Curve_j8fmr"]
+_limits = [-1.0, 1.0, -1.0, 1.0]
+_data = [Vector2(-1, -0.0690355), 0.0, 0.0, 0, 0, Vector2(0.286487, 0.109589), 0.50823, 0.50823, 0, 0, Vector2(1, 1), 1.30232, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Resource" id="Resource_wtp0o"]
+script = ExtResource("5_ej8ax")
+debugName = "hills"
+flipped = false
+noise = SubResource("FastNoiseLite_7qvum")
+strength = 0.0
+frequencyModifier = 0.5
+detailValueModifier = SubResource("Curve_656t2")
+valueBasedOnNoise = SubResource("Curve_j8fmr")
+metadata/_custom_type_script = "uid://ierrqo2ukh5f"
+
+[sub_resource type="Curve" id="Curve_at3n3"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.421622, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_6cufk"]
+_limits = [-1.0, 1.0, -1.0, 1.0]
+_data = [Vector2(-1, -1), 0.0, 1.0, 0, 1, Vector2(1, 1), 1.0, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="Resource" id="Resource_s3sds"]
+script = ExtResource("5_ej8ax")
+debugName = "mountain tops"
+flipped = false
+noise = SubResource("FastNoiseLite_7qvum")
+strength = 0.2
+frequencyModifier = 0.85
+detailValueModifier = SubResource("Curve_at3n3")
+valueBasedOnNoise = SubResource("Curve_6cufk")
+metadata/_custom_type_script = "uid://ierrqo2ukh5f"
+
+[sub_resource type="Curve" id="Curve_gp4ot"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.421622, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_sj6lj"]
+noise_type = 0
+frequency = 0.0001
+fractal_octaves = 1
+
+[sub_resource type="Curve" id="Curve_fvj5u"]
+_limits = [-1.0, 1.0, -1.0, 1.0]
+_data = [Vector2(-1, -1), 0.0, 1.0, 0, 1, Vector2(1, 1), 1.0, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="Resource" id="Resource_fetmv"]
+script = ExtResource("5_ej8ax")
+debugName = "mountain tops fine"
+flipped = false
+noise = SubResource("FastNoiseLite_sj6lj")
+strength = 0.05
+frequencyModifier = 3.0
+detailValueModifier = SubResource("Curve_gp4ot")
+valueBasedOnNoise = SubResource("Curve_fvj5u")
+metadata/_custom_type_script = "uid://ierrqo2ukh5f"
+
+[sub_resource type="Curve" id="Curve_sj6lj"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.421622, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_fvj5u"]
+noise_type = 0
+frequency = 0.0001
+fractal_octaves = 1
+
+[sub_resource type="Curve" id="Curve_6cyyt"]
+_limits = [-1.0, 1.0, -1.0, 1.0]
+_data = [Vector2(-1, -1), 0.0, 1.0, 0, 1, Vector2(1, 1), 1.0, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="Resource" id="Resource_25boh"]
+script = ExtResource("5_ej8ax")
+debugName = "mountain tops finest"
+flipped = false
+noise = SubResource("FastNoiseLite_fvj5u")
+strength = 0.009
+frequencyModifier = 10.0
+detailValueModifier = SubResource("Curve_sj6lj")
+valueBasedOnNoise = SubResource("Curve_6cyyt")
+metadata/_custom_type_script = "uid://ierrqo2ukh5f"
+
+[sub_resource type="Resource" id="Resource_qax1x"]
+script = ExtResource("8_wtp0o")
+scene = ExtResource("6_dvhxg")
+rotationRange = Vector3(15, 15, 15)
+scaleRange = Vector2(18144, 12960)
+heightPercentageRange = Vector2(0.194, 0.273)
+spawningRegionColor = Color(0.990007, 0, 0.266317, 1)
+metadata/_custom_type_script = "uid://cxvrheib1ibgi"
+
+[sub_resource type="Resource" id="Resource_j8fmr"]
+script = ExtResource("8_wtp0o")
+scene = ExtResource("5_cv3hs")
+rotationRange = Vector3(15, 15, 15)
+scaleRange = Vector2(18144, 12960)
+heightPercentageRange = Vector2(0.206, 0.436)
+spawningRegionColor = Color(0.685246, 0.499632, 0, 1)
+metadata/_custom_type_script = "uid://cxvrheib1ibgi"
+
+[sub_resource type="Resource" id="Resource_6cufk"]
+script = ExtResource("8_wtp0o")
+scene = ExtResource("7_dplw4")
+rotationRange = Vector3(15, 15, 15)
+scaleRange = Vector2(18144, 12960)
+heightPercentageRange = Vector2(0.449, 0.544)
+spawningRegionColor = Color(0.603122, 0.736964, 1, 1)
+metadata/_custom_type_script = "uid://cxvrheib1ibgi"
+
+[sub_resource type="Resource" id="Resource_gp4ot"]
+script = ExtResource("8_wtp0o")
+scene = ExtResource("7_41py0")
+rotationRange = Vector3(15, 15, 15)
+scaleRange = Vector2(18144, 12960)
+heightPercentageRange = Vector2(0.495, 0.635)
+spawningRegionColor = Color(0.171634, 0.263872, 1, 1)
+metadata/_custom_type_script = "uid://cxvrheib1ibgi"
+
+[sub_resource type="Resource" id="Resource_sj6lj"]
+script = ExtResource("19_6cufk")
+scene = ExtResource("20_drcbm")
+scaleRange = Vector2(10, 10)
+heightPercentageRange = Vector2(0, 1)
+dimensions = Vector2(20000, 20000)
+heightCheckDensity = 10.0
+maxHeightVariation = 40000.0
+structuresSpawningBlockDistance = 0.0
+objectsSpawningBlockDistance = 0.0
+metadata/_custom_type_script = "uid://bdm75jl3b4dg4"
+
 [node name="Scene" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_73fnb")
 
-[node name="Objects spawing controller" type="Node3D" parent="." node_paths=PackedStringArray("terrainGenController")]
-script = ExtResource("6_ej8ax")
-terrainGenController = NodePath("../TerrainGenControler")
-objectPool = [SubResource("Resource_qax1x"), SubResource("Resource_j8fmr"), SubResource("Resource_6cufk"), SubResource("Resource_gp4ot")]
-density = 10
+[node name="Test" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -252, 179, -444.423)
 
-[node name="TerrainGenControler" type="Node3D" parent="." node_paths=PackedStringArray("objectsSpawningController", "terrainLayout", "Player", "noiseController")]
+[node name="structures parent" type="Node3D" parent="."]
+
+[node name="TerrainGenControler" type="Node3D" parent="." node_paths=PackedStringArray("structuresSpawningController", "objectsSpawningController", "terrainLayout", "Player", "noiseController")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -876.423)
 script = ExtResource("2_4sc0t")
-objectsSpawningController = NodePath("../Objects spawing controller")
+structuresSpawningController = NodePath("Structures spawning controller")
+objectsSpawningController = NodePath("Objects spawing controller")
 TerrainGenerationPrefab = ExtResource("3_s3sds")
 terrainLayout = NodePath("../Layout")
 Player = NodePath("../Player")
-ViewDistance = 40000.0
-terrainMarginSize = 0.001
+ViewDistance = 100000.0
+terrainMarginSize = 30.0
 terrainRawSize = 1000.0
 heightModifier = 4000.0
 terrainScale = 8.0
 terrainTrianglesSize = 40
-waterLevelHeight = -2300.0
+waterLevelHeight = -1097.03
 terrainBaseHeight = 0.0
 noiseController = NodePath("noise controller")
-minMaxHeightForMaterialsAndObjects = Vector2(-30000, 40000)
-
-[node name="noise controller" type="Node" parent="TerrainGenControler" node_paths=PackedStringArray("terrainGenController")]
-script = ExtResource("5_s3sds")
-terrainGenController = NodePath("..")
-components = [SubResource("Resource_7qvum"), SubResource("Resource_sajgy"), SubResource("Resource_ej8ax"), SubResource("Resource_wtp0o"), SubResource("Resource_s3sds")]
+minMaxHeightForMaterialsAndObjects = Vector2(-15000, 33393.5)
+terrainsPerFrame = 10
 
 [node name="material configurator" type="Node" parent="TerrainGenControler" node_paths=PackedStringArray("terrainGenController", "objectsSpawningController")]
 script = ExtResource("12_7knlf")
 terrainGenController = NodePath("..")
-objectsSpawningController = NodePath("../../Objects spawing controller")
+objectsSpawningController = NodePath("../Objects spawing controller")
 update = true
 material = ExtResource("13_a4h70")
 layers = [SubResource("Resource_rjbey"), SubResource("Resource_at3n3"), SubResource("Resource_6cyyt"), SubResource("Resource_drcbm"), SubResource("Resource_656t2")]
@@ -271,22 +376,44 @@ globalScale = 1656.97
 globalBrightness = 1.0
 saturation = 0.235
 
-[node name="test" type="Node3D" parent="TerrainGenControler"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35548.7, -28870.1, -34562.2)
+[node name="noise controller" type="Node" parent="TerrainGenControler" node_paths=PackedStringArray("terrainGenController")]
+script = ExtResource("5_s3sds")
+terrainGenController = NodePath("..")
+components = [SubResource("Resource_7qvum"), SubResource("Resource_sajgy"), SubResource("Resource_wtp0o"), SubResource("Resource_s3sds"), SubResource("Resource_fetmv"), SubResource("Resource_25boh")]
+
+[node name="Objects spawing controller" type="Node3D" parent="TerrainGenControler" node_paths=PackedStringArray("terrainGenController")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 876.423)
+script = ExtResource("6_ej8ax")
+terrainGenController = NodePath("..")
+objectPool = [SubResource("Resource_qax1x"), SubResource("Resource_j8fmr"), SubResource("Resource_6cufk"), SubResource("Resource_gp4ot")]
+density = 20
+
+[node name="Structures spawning controller" type="Node" parent="TerrainGenControler" node_paths=PackedStringArray("terrainGenController", "Parent")]
+script = ExtResource("18_j8fmr")
+terrainGenController = NodePath("..")
+structuresPool = [SubResource("Resource_sj6lj")]
+structureGenerationRange = 100000.0
+structureTileSize = 20000.0
+structureGenerationTimeOffsetS = 10.0
+structureInstancingTriesPerTile = 3
+Parent = NodePath("../../structures parent")
 
 [node name="Player" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 647765, 0, 296680)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -59462.8, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Player"]
+transform = Transform3D(0.306211, -0.452435, 0.837578, 0.0560768, 0.886888, 0.458569, -0.950311, -0.0934502, 0.296946, 90273.9, 36294.5, 27722.2)
+far = 300000.0
 
 [node name="Layout" type="Node3D" parent="."]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.123604, 0.957586, -0.260292, -0.809746, 0.248953, 0.531351, 0.573614, 0.145094, 0.806173, 0, 0, 0)
+transform = Transform3D(0.490337, 0.784663, 0.379307, -0.809673, 0.249088, 0.531399, 0.322488, -0.567679, 0.757458, 0, 0, 0)
 light_energy = 1.84
 light_indirect_energy = 2.555
 light_volumetric_fog_energy = 4.987
 light_specular = 0.035
-shadow_enabled = true
-shadow_normal_bias = 10.0
+shadow_normal_bias = 0.913
 directional_shadow_split_1 = 0.0
 directional_shadow_split_2 = 0.47
 directional_shadow_split_3 = 0.422

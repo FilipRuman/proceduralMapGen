@@ -10,14 +10,12 @@ public partial class ObjectsSpawningController : Node3D {
 
 
     public void SpawnObjectsOnTerrain(Vector2 globalPosition, Node parent) {
-        //Objects are instantiating under the terrain node that is scaled so i have to scale positions back
-        // globalPosition /= terrainGenController.terrainScale;
         RandomNumberGenerator rng = new();
         rng.Seed = (uint)globalPosition.X + (uint)globalPosition.Y + terrainGenController.noiseController.seed;
 
         var spaceState = GetWorld3D().DirectSpaceState;
         for (uint i = 0; i < density; i++) {
-            var point = GetPositionToSpawn(globalPosition, rng, spaceState);
+            var point = GetPositionToSpawn(globalPosition, rng);
 
 
             var viableObjectsList = GetListOfObjectsThatCanBeUsedForThisPoint(point);
@@ -55,9 +53,8 @@ public partial class ObjectsSpawningController : Node3D {
         return output;
     }
 
-    private Vector3 GetPositionToSpawn(Vector2 globalPosition, RandomNumberGenerator rng, PhysicsDirectSpaceState3D spaceState) {
+    private Vector3 GetPositionToSpawn(Vector2 globalPosition, RandomNumberGenerator rng) {
         var pointToCheck = GetRandomPointToCheck(globalPosition, rng);
-        //TODO: Add scale etc.
         var height = terrainGenController.noiseController.GetValue(pointToCheck - Vector2.One * terrainGenController.terrainOffset, new(globalPosition.X, 0, globalPosition.Y));
 
         return new(pointToCheck.X, height, pointToCheck.Y);
