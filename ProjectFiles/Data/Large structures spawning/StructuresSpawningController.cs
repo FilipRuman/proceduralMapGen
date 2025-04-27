@@ -1,213 +1,216 @@
-using Godot;
-using System.Collections.Generic;
-[Tool]
-public partial class StructuresSpawningController : Node {
 
-	[Export] public TerrainGenController terrainGenController;
-	[Export] Structure[] structuresPool;
+namespace FilipRuman.ProceduralMapGen {
+    using Godot;
+    using System.Collections.Generic;
+    [Tool]
+    public partial class StructuresSpawningController : Node {
 
-	[Export] bool regenerateAllStructureInstances = false;
-	//WARN: this uses position on terrain grid not a position on structure grid!
-	Dictionary<Vector2, StructureInstance> structuresInstancesSortedByPositionOnTerrainGenGrid = new();
+        [Export] public TerrainGenController terrainGenController;
+        [Export] Structure[] structuresPool;
 
-	[Export] public bool displayHeightCheckRange;
-	[Export] public float structureGenerationRange;
-	[Export] public float structureTileSize;
-	HashSet<Vector2> structureTileCheckStatus = new();
-	[Export] float structureGenerationTimeOffsetS;
+        [Export] bool regenerateAllStructureInstances = false;
+        //WARN: this uses position on terrain grid not a position on structure grid!
+        Dictionary<Vector2, StructureInstance> structuresInstancesSortedByPositionOnTerrainGenGrid = new();
 
-	[Export] uint structureInstancingTriesPerTile;
-	[Export] Node3D Parent;
-	public class StructureInstance {
-		public Vector3 position;
-		public Structure structure;
+        [Export] public bool displayHeightCheckRange;
+        [Export] public float structureGenerationRange;
+        [Export] public float structureTileSize;
+        HashSet<Vector2> structureTileCheckStatus = new();
+        [Export] float structureGenerationTimeOffsetS;
 
-		public float scale;
-		public float rotation;
-	}
+        [Export] uint structureInstancingTriesPerTile;
+        [Export] Node3D Parent;
+        public class StructureInstance {
+            public Vector3 position;
+            public Structure structure;
 
-	private float generationOffsetTimer;
-	public override void _Process(double delta) {
-		if (regenerateAllStructureInstances) {
-			regenerateAllStructureInstances = false;
-			RegenerateStructureInstances();
-		}
-		generationOffsetTimer += (float)delta;
-		if (generationOffsetTimer > structureGenerationTimeOffsetS) {
-			generationOffsetTimer = 0;
-			GenerateStructures();
-		}
-		base._Process(delta);
-	}
-	private void RegenerateStructureInstances() {
-		foreach (Node node in Parent.GetChildren()) {
-			node.QueueFree();
-		}
-		structuresInstancesSortedByPositionOnTerrainGenGrid.Clear();
-		structureTileCheckStatus.Clear();
+            public float scale;
+            public float rotation;
+        }
 
-		GenerateStructures();
-	}
-	public override void _Ready() {
+        private float generationOffsetTimer;
+        public override void _Process(double delta) {
+            if (regenerateAllStructureInstances) {
+                regenerateAllStructureInstances = false;
+                RegenerateStructureInstances();
+            }
+            generationOffsetTimer += (float)delta;
+            if (generationOffsetTimer > structureGenerationTimeOffsetS) {
+                generationOffsetTimer = 0;
+                GenerateStructures();
+            }
+            base._Process(delta);
+        }
+        private void RegenerateStructureInstances() {
+            foreach (Node node in Parent.GetChildren()) {
+                node.QueueFree();
+            }
+            structuresInstancesSortedByPositionOnTerrainGenGrid.Clear();
+            structureTileCheckStatus.Clear();
 
-		RegenerateStructureInstances();
-		base._Ready();
-	}
+            GenerateStructures();
+        }
+        public override void _Ready() {
 
-	private void GenerateStructures() {
+            RegenerateStructureInstances();
+            base._Ready();
+        }
 
-		WhatTerrainDoYouNeedToLoad(out int maxX, out int minX, out int maxY, out int minY);
-		RandomNumberGenerator rng = new();
-		for (int x = minX; x < maxX; x++) {
-			for (int y = minY; y < maxY; y++) {
+        private void GenerateStructures() {
 
-				Vector2 positionOnGrid = new(x, y);
+            WhatTerrainDoYouNeedToLoad(out int maxX, out int minX, out int maxY, out int minY);
+            RandomNumberGenerator rng = new();
+            for (int x = minX; x < maxX; x++) {
+                for (int y = minY; y < maxY; y++) {
 
-
-				if (structureTileCheckStatus.Contains(positionOnGrid))
-					continue;
-
-				structureTileCheckStatus.Add(positionOnGrid);
-
-				rng.Seed = (uint)(x + y + terrainGenController.noiseController.seed);
-				var globalPosition = new Vector2(x, y) * structureTileSize;
-				for (int i = 0; i < structureInstancingTriesPerTile; i++) {
-
-					var globalSpawnPoint = GetGlobalPositionToSpawn(globalPosition, rng);
-
-					if (!FarEnoughFromStructures(globalSpawnPoint, structure: true))
-						continue;
-
-					var viableObjectsList = GetListOfObjectsThatCanBeUsedForThisPoint(globalSpawnPoint);
-					if (viableObjectsList.Count == 0) continue;
-
-					Structure validStructure = null;
-					foreach (Structure structure in viableObjectsList) {
-						if (!IsSpawnPointValid(structure, globalSpawnPoint, false))
-							continue;
-						validStructure = structure;
-						if (displayHeightCheckRange)
-							IsSpawnPointValid(structure, globalSpawnPoint, true);
-						break;
-					}
-					if (validStructure == null)
-						continue;
-
-					Vector2 posOnTerrainGrid = new(Mathf.FloorToInt(globalPosition.X / terrainGenController.RealTerrainSize), Mathf.FloorToInt(globalPosition.Y / terrainGenController.RealTerrainSize));
-					StructureInstance structureInstance = new() {
-						structure = validStructure,
-						position = globalSpawnPoint,
-						scale = rng.RandfRange(validStructure.scaleRange.X,
-						validStructure.scaleRange.Y) / terrainGenController.terrainScale,
-						rotation = rng.RandfRange(0, 360)
-					};
-					structuresInstancesSortedByPositionOnTerrainGenGrid.Add(posOnTerrainGrid, structureInstance);
-					SpawnStructureScene(structureInstance, Parent);
-					break;
-				}
-			}
-		}
-
-	}
-	public bool FarEnoughFromStructures(Vector3 globalPosition, bool structure) {
-
-		foreach (StructureInstance checkedStructureInstance in structuresInstancesSortedByPositionOnTerrainGenGrid.Values) {
-			float distBlock = structure ? checkedStructureInstance.structure.structuresSpawningBlockDistance : checkedStructureInstance.structure.objectsSpawningBlockDistance;
-
-			if (globalPosition.DistanceTo(checkedStructureInstance.position) < distBlock)
-				return false;
-		}
-		return true;
-	}
-
-	void WhatTerrainDoYouNeedToLoad(out int maxX, out int minX, out int maxY, out int minY) {
-		var playerPos = terrainGenController.Player.GlobalPosition;
-
-		maxX = Mathf.CeilToInt((playerPos.X + structureGenerationRange) / structureTileSize);
-		minX = Mathf.CeilToInt((playerPos.X - structureGenerationRange) / structureTileSize);
-
-		maxY = Mathf.CeilToInt((playerPos.Z + structureGenerationRange) / structureTileSize);
-		minY = Mathf.CeilToInt((playerPos.Z - structureGenerationRange) / structureTileSize);
-	}
-
-	private void SpawnStructureScene(StructureInstance structureInstance, Node parent) {
-		var node = (Node3D)structureInstance.structure.scene.Instantiate();
-		parent.AddChild(node);
-
-		node.GlobalPosition = structureInstance.position;
-		node.Scale = Vector3.One * structureInstance.scale;
-		node.RotationDegrees = new(0, structureInstance.rotation, 0);
-	}
+                    Vector2 positionOnGrid = new(x, y);
 
 
-	private List<Structure> GetListOfObjectsThatCanBeUsedForThisPoint(Vector3 point) {
-		List<Structure> output = new();
+                    if (structureTileCheckStatus.Contains(positionOnGrid))
+                        continue;
 
-		float heightPercentage = Mathf.Clamp(
-				Mathf.InverseLerp(terrainGenController.minMaxHeightForMaterialsAndObjects.X, terrainGenController.minMaxHeightForMaterialsAndObjects.Y, point.Y * terrainGenController.terrainScale)
-				, 0, 1);
+                    structureTileCheckStatus.Add(positionOnGrid);
 
-		foreach (Structure structure in structuresPool) {
-			if (heightPercentage < structure.heightPercentageRange.X || heightPercentage > structure.heightPercentageRange.Y)
-				continue;
-			output.Add(structure);
-		}
-		return output;
-	}
+                    rng.Seed = (uint)(x + y + terrainGenController.noiseController.seed);
+                    var globalPosition = new Vector2(x, y) * structureTileSize;
+                    for (int i = 0; i < structureInstancingTriesPerTile; i++) {
 
-	private bool IsSpawnPointValid(Structure structure, Vector3 startPoint, bool debug) {
-		float xStepSize = structure.dimensions.X / structure.heightCheckDensity;
-		float zStepSize = structure.dimensions.Y / structure.heightCheckDensity;
+                        var globalSpawnPoint = GetGlobalPositionToSpawn(globalPosition, rng);
 
-		float totalHeightDifference = 0;
-		for (int x = 0; x < structure.heightCheckDensity; x++) {
-			for (int z = 0; z < structure.heightCheckDensity; z++) {
-				Vector2 currentPosition = new Vector2(startPoint.X, startPoint.Z) + new Vector2(x * xStepSize, z * zStepSize) - structure.dimensions / 2f;
+                        if (!FarEnoughFromStructures(globalSpawnPoint, structure: true))
+                            continue;
 
-				float height = terrainGenController.terrainScale * terrainGenController.noiseController.GetValue(-Vector2.One * terrainGenController.terrainOffset, new Vector3(currentPosition.X, 0, currentPosition.Y));
-				if (debug)
-					SpawnSphereMesh(new(currentPosition.X, height, currentPosition.Y));
-				totalHeightDifference += Mathf.Abs(startPoint.Y - height);
+                        var viableObjectsList = GetListOfObjectsThatCanBeUsedForThisPoint(globalSpawnPoint);
+                        if (viableObjectsList.Count == 0) continue;
 
-			}
-		}
+                        Structure validStructure = null;
+                        foreach (Structure structure in viableObjectsList) {
+                            if (!IsSpawnPointValid(structure, globalSpawnPoint, false))
+                                continue;
+                            validStructure = structure;
+                            if (displayHeightCheckRange)
+                                IsSpawnPointValid(structure, globalSpawnPoint, true);
+                            break;
+                        }
+                        if (validStructure == null)
+                            continue;
 
-		if (totalHeightDifference > structure.maxHeightVariation) {
-			return false;
-		}
+                        Vector2 posOnTerrainGrid = new(Mathf.FloorToInt(globalPosition.X / terrainGenController.RealTerrainSize), Mathf.FloorToInt(globalPosition.Y / terrainGenController.RealTerrainSize));
+                        StructureInstance structureInstance = new() {
+                            structure = validStructure,
+                            position = globalSpawnPoint,
+                            scale = rng.RandfRange(validStructure.scaleRange.X,
+                            validStructure.scaleRange.Y) / terrainGenController.terrainScale,
+                            rotation = rng.RandfRange(0, 360)
+                        };
+                        structuresInstancesSortedByPositionOnTerrainGenGrid.Add(posOnTerrainGrid, structureInstance);
+                        SpawnStructureScene(structureInstance, Parent);
+                        break;
+                    }
+                }
+            }
 
-		return true;
-	}
-	void SpawnSphereMesh(Vector3 pos) {
-		var ins = new MeshInstance3D();
-		Parent.AddChild(ins);
-		ins.GlobalPosition = pos;
-		var sphere = new SphereMesh();
-		sphere.Radius = 100f;
-		sphere.Height = 100 * 2f;
-		ins.Mesh = sphere;
+        }
+        public bool FarEnoughFromStructures(Vector3 globalPosition, bool structure) {
 
-	}
-	Vector3 GetGlobalPositionToSpawn(Vector2 globalPosStartPoint, RandomNumberGenerator rng) {
+            foreach (StructureInstance checkedStructureInstance in structuresInstancesSortedByPositionOnTerrainGenGrid.Values) {
+                float distBlock = structure ? checkedStructureInstance.structure.structuresSpawningBlockDistance : checkedStructureInstance.structure.objectsSpawningBlockDistance;
 
-		float rangeOffset = structureTileSize / 2f;
-		float x = rng.RandfRange(globalPosStartPoint.X - rangeOffset, globalPosStartPoint.X + rangeOffset);
-		float z = rng.RandfRange(globalPosStartPoint.Y - rangeOffset, globalPosStartPoint.Y + rangeOffset);
-		x -= terrainGenController.terrainOffset;
-		z -= terrainGenController.terrainOffset;
+                if (globalPosition.DistanceTo(checkedStructureInstance.position) < distBlock)
+                    return false;
+            }
+            return true;
+        }
+
+        void WhatTerrainDoYouNeedToLoad(out int maxX, out int minX, out int maxY, out int minY) {
+            var playerPos = terrainGenController.Player.GlobalPosition;
+
+            maxX = Mathf.CeilToInt((playerPos.X + structureGenerationRange) / structureTileSize);
+            minX = Mathf.CeilToInt((playerPos.X - structureGenerationRange) / structureTileSize);
+
+            maxY = Mathf.CeilToInt((playerPos.Z + structureGenerationRange) / structureTileSize);
+            minY = Mathf.CeilToInt((playerPos.Z - structureGenerationRange) / structureTileSize);
+        }
+
+        private void SpawnStructureScene(StructureInstance structureInstance, Node parent) {
+            var node = (Node3D)structureInstance.structure.scene.Instantiate();
+            parent.AddChild(node);
+
+            node.GlobalPosition = structureInstance.position;
+            node.Scale = Vector3.One * structureInstance.scale;
+            node.RotationDegrees = new(0, structureInstance.rotation, 0);
+        }
+
+
+        private List<Structure> GetListOfObjectsThatCanBeUsedForThisPoint(Vector3 point) {
+            List<Structure> output = new();
+
+            float heightPercentage = Mathf.Clamp(
+                    Mathf.InverseLerp(terrainGenController.minMaxHeightForMaterialsAndObjects.X, terrainGenController.minMaxHeightForMaterialsAndObjects.Y, point.Y * terrainGenController.terrainScale)
+                    , 0, 1);
+
+            foreach (Structure structure in structuresPool) {
+                if (heightPercentage < structure.heightPercentageRange.X || heightPercentage > structure.heightPercentageRange.Y)
+                    continue;
+                output.Add(structure);
+            }
+            return output;
+        }
+
+        private bool IsSpawnPointValid(Structure structure, Vector3 startPoint, bool debug) {
+            float xStepSize = structure.dimensions.X / structure.heightCheckDensity;
+            float zStepSize = structure.dimensions.Y / structure.heightCheckDensity;
+
+            float totalHeightDifference = 0;
+            for (int x = 0; x < structure.heightCheckDensity; x++) {
+                for (int z = 0; z < structure.heightCheckDensity; z++) {
+                    Vector2 currentPosition = new Vector2(startPoint.X, startPoint.Z) + new Vector2(x * xStepSize, z * zStepSize) - structure.dimensions / 2f;
+
+                    float height = terrainGenController.terrainScale * terrainGenController.noiseController.GetValue(-Vector2.One * terrainGenController.terrainOffset, new Vector3(currentPosition.X, 0, currentPosition.Y));
+                    if (debug)
+                        SpawnSphereMesh(new(currentPosition.X, height, currentPosition.Y));
+                    totalHeightDifference += Mathf.Abs(startPoint.Y - height);
+
+                }
+            }
+
+            if (totalHeightDifference > structure.maxHeightVariation) {
+                return false;
+            }
+
+            return true;
+        }
+        void SpawnSphereMesh(Vector3 pos) {
+            var ins = new MeshInstance3D();
+            Parent.AddChild(ins);
+            ins.GlobalPosition = pos;
+            var sphere = new SphereMesh();
+            sphere.Radius = 100f;
+            sphere.Height = 100 * 2f;
+            ins.Mesh = sphere;
+
+        }
+        Vector3 GetGlobalPositionToSpawn(Vector2 globalPosStartPoint, RandomNumberGenerator rng) {
+
+            float rangeOffset = structureTileSize / 2f;
+            float x = rng.RandfRange(globalPosStartPoint.X - rangeOffset, globalPosStartPoint.X + rangeOffset);
+            float z = rng.RandfRange(globalPosStartPoint.Y - rangeOffset, globalPosStartPoint.Y + rangeOffset);
+            x -= terrainGenController.terrainOffset;
+            z -= terrainGenController.terrainOffset;
 
 
 
 
-		float height = terrainGenController.noiseController.GetValue(-Vector2.One * terrainGenController.terrainOffset, new Vector3(x, 0, z));
-		height *= terrainGenController.terrainScale;
-		return new(x, height, z);
-	}
+            float height = terrainGenController.noiseController.GetValue(-Vector2.One * terrainGenController.terrainOffset, new Vector3(x, 0, z));
+            height *= terrainGenController.terrainScale;
+            return new(x, height, z);
+        }
 
 
-	private Vector2 GetRandomPointToCheck(Vector2 startPoint, RandomNumberGenerator rng) {
+        private Vector2 GetRandomPointToCheck(Vector2 startPoint, RandomNumberGenerator rng) {
 
-		float offset = structureTileSize / 2f;
-		return startPoint + new Vector2(rng.RandfRange(offset, -offset), rng.RandfRange(offset, -offset));
-	}
+            float offset = structureTileSize / 2f;
+            return startPoint + new Vector2(rng.RandfRange(offset, -offset), rng.RandfRange(offset, -offset));
+        }
+    }
 }
