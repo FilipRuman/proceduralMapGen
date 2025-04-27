@@ -99,7 +99,7 @@ public partial class StructuresSpawningController : Node {
 						position = globalSpawnPoint,
 						scale = rng.RandfRange(validStructure.scaleRange.X,
 						validStructure.scaleRange.Y) / terrainGenController.terrainScale,
-						rotation = 0
+						rotation = rng.RandfRange(0, 360)
 					};
 					structuresInstancesSortedByPositionOnTerrainGenGrid.Add(posOnTerrainGrid, structureInstance);
 					SpawnStructureScene(structureInstance, Parent);
@@ -108,10 +108,6 @@ public partial class StructuresSpawningController : Node {
 			}
 		}
 
-		GD.Print($"structuresInstancesSortedByPositionOnTerrainGenGrid.Count {structuresInstancesSortedByPositionOnTerrainGenGrid.Count} {structureTileCheckStatus.Count}");
-		// foreach (Vector2 pos in structuresInstancesSortedByPositionOnTerrainGenGrid.Keys) {
-		// 	GD.Print($"structure instance pos  {pos}");
-		// }
 	}
 	public bool FarEnoughFromStructures(Vector3 globalPosition, bool structure) {
 
@@ -134,31 +130,13 @@ public partial class StructuresSpawningController : Node {
 		minY = Mathf.CeilToInt((playerPos.Z - structureGenerationRange) / structureTileSize);
 	}
 
-	// public void SpawnStructureScenesOnTerrain(Vector2 positionOnATerrainGrid, Node parent) {
-	//     //
-	//     // var globalPos = positionOnATerrainGrid * terrainGenController.RealTerrainSize;
-	//     // Vector2 structureGridPosition = globalPos / structureTileSize;
-	//     // structureGridPosition.X = Mathf.FloorToInt(structureGridPosition.X);
-	//     // structureGridPosition.Y = Mathf.FloorToInt(structureGridPosition.Y);
-	//     //
-	//     //
-	//     // GD.Print($"positionOnATerrainGrid {positionOnATerrainGrid}");
-	//     if (structuresInstancesSortedByPositionOnTerrainGenGrid.TryGetValue(positionOnATerrainGrid, out StructureInstance structureOnThisTile))
-	//         SpawnStructureScene(structureOnThisTile, parent);
-	// }
 	private void SpawnStructureScene(StructureInstance structureInstance, Node parent) {
-		GD.Print($"SpawnStructureScene {structureInstance.position}");
 		var node = (Node3D)structureInstance.structure.scene.Instantiate();
 		parent.AddChild(node);
 
 		node.GlobalPosition = structureInstance.position;
 		node.Scale = Vector3.One * structureInstance.scale;
-		// node.RotationDegrees = new(
-		//         rng.RandfRange(-streucture.rotationRange.X, streucture.rotationRange.X),
-		//         rng.RandfRange(-streucture.rotationRange.Y, streucture.rotationRange.Y),
-		//         rng.RandfRange(-streucture.rotationRange.Z, streucture.rotationRange.Z)
-		//         );
-
+		node.RotationDegrees = new(0, structureInstance.rotation, 0);
 	}
 
 
@@ -181,23 +159,22 @@ public partial class StructuresSpawningController : Node {
 		float xStepSize = structure.dimensions.X / structure.heightCheckDensity;
 		float zStepSize = structure.dimensions.Y / structure.heightCheckDensity;
 
-		float totalVariaton = 0;
+		float totalHeightDifference = 0;
 		for (int x = 0; x < structure.heightCheckDensity; x++) {
 			for (int z = 0; z < structure.heightCheckDensity; z++) {
-				Vector2 currentPossition = new Vector2(startPoint.X, startPoint.Z) + new Vector2(x * xStepSize, z * zStepSize) - structure.dimensions / 2f;
+				Vector2 currentPosition = new Vector2(startPoint.X, startPoint.Z) + new Vector2(x * xStepSize, z * zStepSize) - structure.dimensions / 2f;
 
-				float height = terrainGenController.terrainScale * terrainGenController.noiseController.GetValue(-Vector2.One * terrainGenController.terrainOffset, new Vector3(currentPossition.X, 0, currentPossition.Y));
+				float height = terrainGenController.terrainScale * terrainGenController.noiseController.GetValue(-Vector2.One * terrainGenController.terrainOffset, new Vector3(currentPosition.X, 0, currentPosition.Y));
 				if (debug)
-					SpawnSphereMesh(new(currentPossition.X, height, currentPossition.Y));
-				totalVariaton += Mathf.Abs(startPoint.Y - height);
+					SpawnSphereMesh(new(currentPosition.X, height, currentPosition.Y));
+				totalHeightDifference += Mathf.Abs(startPoint.Y - height);
 
 			}
 		}
 
-		if (totalVariaton > structure.maxHeightVariation) {
+		if (totalHeightDifference > structure.maxHeightVariation) {
 			return false;
 		}
-		GD.Print($" height difference  {Mathf.Abs(startPoint.Y - totalVariaton)} at {startPoint}");
 
 		return true;
 	}

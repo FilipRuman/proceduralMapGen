@@ -292,7 +292,7 @@ script = ExtResource("8_wtp0o")
 scene = ExtResource("6_dvhxg")
 rotationRange = Vector3(15, 15, 15)
 scaleRange = Vector2(18144, 12960)
-heightPercentageRange = Vector2(0.194, 0.273)
+heightPercentageRange = Vector2(0.271, 0.336)
 spawningRegionColor = Color(0.990007, 0, 0.266317, 1)
 metadata/_custom_type_script = "uid://cxvrheib1ibgi"
 
@@ -301,7 +301,7 @@ script = ExtResource("8_wtp0o")
 scene = ExtResource("5_cv3hs")
 rotationRange = Vector3(15, 15, 15)
 scaleRange = Vector2(18144, 12960)
-heightPercentageRange = Vector2(0.206, 0.436)
+heightPercentageRange = Vector2(0.281, 0.436)
 spawningRegionColor = Color(0.685246, 0.499632, 0, 1)
 metadata/_custom_type_script = "uid://cxvrheib1ibgi"
 
@@ -356,7 +356,7 @@ terrainRawSize = 1000.0
 heightModifier = 4000.0
 terrainScale = 8.0
 terrainTrianglesSize = 40
-waterLevelHeight = -1097.03
+waterLevelHeight = -200.0
 terrainBaseHeight = 0.0
 noiseController = NodePath("noise controller")
 minMaxHeightForMaterialsAndObjects = Vector2(-15000, 33393.5)
