@@ -5,6 +5,7 @@
 		"triplanar",
 		"Mathf",
 		"Lerp",
+		"shader"
 	],
 	"flagWords": [
 		"hte"
