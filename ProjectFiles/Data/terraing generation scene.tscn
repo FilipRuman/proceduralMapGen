@@ -331,8 +331,8 @@ heightPercentageRange = Vector2(0, 1)
 dimensions = Vector2(20000, 20000)
 heightCheckDensity = 10.0
 maxHeightVariation = 40000.0
-structuresSpawningBlockDistance = 0.0
-objectsSpawningBlockDistance = 0.0
+structuresSpawningBlockDistance = 33333.3
+objectsSpawningBlockDistance = 10000.0
 metadata/_custom_type_script = "uid://bdm75jl3b4dg4"
 
 [node name="Scene" type="Node3D"]
@@ -343,10 +343,7 @@ environment = SubResource("Environment_73fnb")
 [node name="Test" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -252, 179, -444.423)
 
-[node name="structures parent" type="Node3D" parent="."]
-
 [node name="TerrainGenControler" type="Node3D" parent="." node_paths=PackedStringArray("structuresSpawningController", "objectsSpawningController", "terrainLayout", "Player", "noiseController")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -876.423)
 script = ExtResource("2_4sc0t")
 structuresSpawningController = NodePath("Structures spawning controller")
 objectsSpawningController = NodePath("Objects spawing controller")
@@ -381,10 +378,11 @@ script = ExtResource("5_s3sds")
 terrainGenController = NodePath("..")
 components = [SubResource("Resource_7qvum"), SubResource("Resource_sajgy"), SubResource("Resource_wtp0o"), SubResource("Resource_s3sds"), SubResource("Resource_fetmv"), SubResource("Resource_25boh")]
 
-[node name="Objects spawing controller" type="Node3D" parent="TerrainGenControler" node_paths=PackedStringArray("terrainGenController")]
+[node name="Objects spawing controller" type="Node3D" parent="TerrainGenControler" node_paths=PackedStringArray("terrainGenController", "structuresSpawningController")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 876.423)
 script = ExtResource("6_ej8ax")
 terrainGenController = NodePath("..")
+structuresSpawningController = NodePath("../Structures spawning controller")
 objectPool = [SubResource("Resource_qax1x"), SubResource("Resource_j8fmr"), SubResource("Resource_6cufk"), SubResource("Resource_gp4ot")]
 density = 20
 
@@ -396,7 +394,9 @@ structureGenerationRange = 100000.0
 structureTileSize = 20000.0
 structureGenerationTimeOffsetS = 10.0
 structureInstancingTriesPerTile = 3
-Parent = NodePath("../../structures parent")
+Parent = NodePath("structures parent")
+
+[node name="structures parent" type="Node3D" parent="TerrainGenControler/Structures spawning controller"]
 
 [node name="Player" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -59462.8, 0, 0)

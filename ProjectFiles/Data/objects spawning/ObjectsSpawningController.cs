@@ -2,21 +2,27 @@ using Godot;
 using System.Collections.Generic;
 [Tool]
 public partial class ObjectsSpawningController : Node3D {
-    [Export] public TerrainGenController terrainGenController;
+
+    [Export] private TerrainGenController terrainGenController;
+    [Export] private StructuresSpawningController structuresSpawningController;
     [Export] public ObjectSettings[] objectPool;
-    [Export] uint density;
+    [Export] private uint density;
 
     [Export] public bool displayObjectsSpawningRegions;
 
 
-    public void SpawnObjectsOnTerrain(Vector2 globalPosition, Node parent) {
+    public void SpawnObjectsOnTerrain(Vector2 startGlobalPosition, Node parent) {
         RandomNumberGenerator rng = new();
-        rng.Seed = (uint)globalPosition.X + (uint)globalPosition.Y + terrainGenController.noiseController.seed;
+        rng.Seed = (uint)startGlobalPosition.X + (uint)startGlobalPosition.Y + terrainGenController.noiseController.seed;
 
         var spaceState = GetWorld3D().DirectSpaceState;
         for (uint i = 0; i < density; i++) {
-            var point = GetPositionToSpawn(globalPosition, rng);
+            var point = GetPositionToSpawn(startGlobalPosition, rng);
 
+
+            var currentRealGlobalPosition = new Vector3(startGlobalPosition.X + point.X * terrainGenController.terrainScale, 0/*  point.Y  *//* * terrainGenController.terrainScale */, startGlobalPosition.Y + point.Z * terrainGenController.terrainScale);
+            if (!structuresSpawningController.FarEnoughFromStructures(currentRealGlobalPosition, structure: false))
+                continue;
 
             var viableObjectsList = GetListOfObjectsThatCanBeUsedForThisPoint(point);
             if (viableObjectsList.Count == 0) continue;
